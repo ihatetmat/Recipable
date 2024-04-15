@@ -1,7 +1,7 @@
-package capstone.recipable.global.storage.ingredient.jpa;
+package capstone.recipable.domain.ingredient;
 
-import capstone.recipable.global.storage.category.jpa.CategoryEntity;
-import capstone.recipable.global.storage.expiration.jpa.ExpirationEntity;
+import capstone.recipable.domain.category.Category;
+import capstone.recipable.domain.expiration.Expiration;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class IngredientEntity {
+public class Ingredient {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,8 +21,8 @@ public class IngredientEntity {
     private String ingredientName;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    private CategoryEntity categoryId;
+    private Category categoryId;
 
     @OneToOne
-    private ExpirationEntity expirationId;
+    private Expiration expirationId;
 }

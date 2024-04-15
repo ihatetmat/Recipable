@@ -1,6 +1,6 @@
-package capstone.recipable.global.storage.refrigerator.jpa;
+package capstone.recipable.domain.category;
 
-import capstone.recipable.global.storage.user.jpa.UserEntity;
+import capstone.recipable.domain.refrigerator.Refrigerator;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -11,12 +11,17 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class RefrigeratorEntity {
+public class Category {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    private UserEntity userId;
+    private String categoryName;
+
+    private String details;
+
+    @ManyToOne(fetch=FetchType.LAZY)
+    private Refrigerator refrigeratorId;
+
 }

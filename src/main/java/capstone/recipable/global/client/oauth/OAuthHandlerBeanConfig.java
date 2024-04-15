@@ -1,3 +1,4 @@
+/*
 package capstone.recipable.global.client.oauth;
 
 import capstone.recipable.domain.user.domain.Provider;
@@ -20,4 +21,4 @@ public class OAuthHandlerBeanConfig {
                 Provider.KAKAO, kakaoOAuthHandler
         );
     }
-}
+}*/

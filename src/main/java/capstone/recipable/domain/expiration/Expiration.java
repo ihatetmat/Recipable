@@ -1,27 +1,26 @@
-package capstone.recipable.global.storage.bookmark.jpa;
+package capstone.recipable.domain.expiration;
 
-import capstone.recipable.global.storage.recipe.jpa.RecipeEntity;
-import capstone.recipable.global.storage.user.jpa.UserEntity;
+import capstone.recipable.domain.ingredient.Ingredient;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class BookmarkEntity {
+public class Expiration {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private UserEntity userId;
+    private LocalDate expireDate;
 
     @OneToOne
-    private RecipeEntity recipeId;
-
+    private Ingredient ingredientId;
 }
