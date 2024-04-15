@@ -1,27 +1,26 @@
-package capstone.recipable.domain.category;
+package capstone.recipable.domain.expiration.entity;
 
-import capstone.recipable.domain.refrigerator.Refrigerator;
+import capstone.recipable.domain.ingredient.entity.Ingredient;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Category {
+public class Expiration {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String categoryName;
+    private LocalDate expireDate;
 
-    private String details;
-
-    @ManyToOne(fetch=FetchType.LAZY)
-    private Refrigerator refrigeratorId;
-
+    @OneToOne
+    private Ingredient ingredientId;
 }

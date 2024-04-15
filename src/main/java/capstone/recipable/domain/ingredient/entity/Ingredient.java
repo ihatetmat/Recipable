@@ -1,7 +1,7 @@
-package capstone.recipable.domain.ingredient;
+package capstone.recipable.domain.ingredient.entity;
 
-import capstone.recipable.domain.category.Category;
-import capstone.recipable.domain.expiration.Expiration;
+import capstone.recipable.domain.category.entity.Category;
+import capstone.recipable.domain.expiration.entity.Expiration;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

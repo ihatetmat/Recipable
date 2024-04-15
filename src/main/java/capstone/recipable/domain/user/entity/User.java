@@ -1,4 +1,4 @@
-package capstone.recipable.domain.user;
+package capstone.recipable.domain.user.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
