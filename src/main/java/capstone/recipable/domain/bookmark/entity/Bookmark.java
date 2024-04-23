@@ -1,34 +1,27 @@
-package capstone.recipable.domain.recipe;
+package capstone.recipable.domain.bookmark.entity;
 
+import capstone.recipable.domain.recipe.entity.Recipe;
+import capstone.recipable.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Recipe {
+public class Bookmark {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String recipeImg;
+    @ManyToOne
+    private User userId;
 
-    private String recipeName;
+    @OneToOne
+    private Recipe recipeId;
 
-    private String introduce;
-
-    @ElementCollection
-    private List<String> ingredients;
-
-    private String recipeDetails;
-
-    @ElementCollection
-    private List<String> videoUrls;
 }

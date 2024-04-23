@@ -1,7 +1,6 @@
-package capstone.recipable.domain.bookmark;
+package capstone.recipable.domain.refrigerator.entity;
 
-import capstone.recipable.domain.recipe.Recipe;
-import capstone.recipable.domain.user.User;
+import capstone.recipable.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -12,16 +11,12 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class Bookmark {
+public class Refrigerator {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    private User userId;
-
     @OneToOne
-    private Recipe recipeId;
-
+    private User userId;
 }
