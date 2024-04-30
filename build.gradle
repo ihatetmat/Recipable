@@ -33,13 +33,13 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 
 	//db
-//	runtimeOnly 'com.mysql:mysql-connector-j'
+	runtimeOnly 'com.mysql:mysql-connector-j'
 
 	//validation
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
+//	testImplementation 'org.springframework.security:spring-security-test'
 }
 
 tasks.named('test') {
