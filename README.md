@@ -19,6 +19,57 @@ Commit Convention을 따르는 것을 지향하되 유동적으로 변경하셔�
 
 - `ex) [feat] : 로그인 기능 구현`
 
+## Project Structure
+package 구조는 아래 패키지 구조를 따릅니다. 때에 따라 유동적으로 변경해도 상관없습니다.
+
+```
+├── domain
+│   ├── member
+│   │   ├── api
+│   │   │   └── MemberApi.java
+│   │   ├── application
+│   │   │   ├── MemberProfileService.java
+│   │   │   ├── MemberSearchService.java
+│   │   │   ├── MemberSignUpService.java
+│   │   ├── repository
+│   │   │   ├── MemberRepository.java
+│   │   │   ├── MemberSupportRepository.java
+│   │   │   └── MemberSupportRepositoryImpl.java
+│   │   ├── domain
+│   │   │   ├── MemberEntity.java
+│   │   ├── dto
+│   │   │   ├── LoginRequest.java
+│   │   │   └── LoginResponse.java
+│   │   └── exception
+│   │       ├── EmailNotFoundException.java
+│   │       └── MemberNotFoundException.java
+│   │
+│   │
+├── global
+│   ├── config
+│   │   ├── SwaggerConfig.java
+│   │   ├── properties
+│   │   └── security
+│   │
+│   ├── ApiResponse.java
+│   ├── error
+│   │   ├── code
+│   │       ├── BaseCode.java
+│   │       ├── BaseCodeError.java
+│   │   ├── dto
+│   │       ├── ErrorReasonDto.java
+│   │       ├── ReasonDto.java
+│   │   ├── exception
+│   │       ├── ExceptionAdvice.java
+│   │       ├── GeneralException.java
+│   │   └── status
+│   │       ├── ErrorStatus.java
+│   │       ├── SuccessStatus.java
+│   ├── util
+```
+
+
+
 [//]: # (## Deploy)
 
 [//]: # (Ec2 + Github Actions + Docker + Nginx - Blue/Green으로 진행합니다.)
