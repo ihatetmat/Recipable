@@ -24,7 +24,7 @@ public class Ingredient {
     @OneToOne
     private Expiration expirationId;
 
-    private static Ingredient of(Long id, String ingredientName, Category categoryId, Expiration expirationId) {
+    public static Ingredient of(Long id, String ingredientName, Category categoryId, Expiration expirationId) {
         return Ingredient.builder()
                 .id(id)
                 .ingredientName(ingredientName)

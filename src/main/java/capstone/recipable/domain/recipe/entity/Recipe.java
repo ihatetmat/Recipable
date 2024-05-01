@@ -30,7 +30,7 @@ public class Recipe {
     @ElementCollection
     private List<String> videoUrls;
 
-    private static Recipe of(Long id, String recipeImg, String recipeName, String introduce,
+    public static Recipe of(Long id, String recipeImg, String recipeName, String introduce,
                              List<String> ingredients, String recipeDetails,
                              List<String> videoUrls) {
         return Recipe.builder()

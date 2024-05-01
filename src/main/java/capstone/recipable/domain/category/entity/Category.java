@@ -22,7 +22,7 @@ public class Category {
     @ManyToOne(fetch=FetchType.LAZY)
     private Refrigerator refrigeratorId;
 
-    private static Category of(Long id, String categoryName, String details, Refrigerator refrigerator) {
+    public static Category of(Long id, String categoryName, String details, Refrigerator refrigerator) {
         return Category.builder()
                 .id(id)
                 .categoryName(categoryName)

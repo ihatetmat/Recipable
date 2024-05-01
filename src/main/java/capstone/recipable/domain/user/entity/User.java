@@ -25,7 +25,7 @@ public class User {
 
     private String userImg;
 
-    private static User of(Long id, String nickname, String loginId, String password, String userImg) {
+    public static User of(Long id, String nickname, String loginId, String password, String userImg) {
         return User.builder()
                 .id(id)
                 .nickname(nickname)

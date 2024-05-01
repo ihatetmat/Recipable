@@ -18,7 +18,7 @@ public class Refrigerator {
     @OneToOne
     private User userId;
 
-    private static Refrigerator of(Long id, User userId) {
+    public static Refrigerator of(Long id, User userId) {
         return Refrigerator.builder()
                 .id(id)
                 .userId(userId)

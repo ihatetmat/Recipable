@@ -22,7 +22,7 @@ public class Bookmark {
     @OneToOne
     private Recipe recipeId;
 
-    private static Bookmark of(Long id, User userId, Recipe recipeId) {
+    public static Bookmark of(Long id, User userId, Recipe recipeId) {
         return Bookmark.builder()
                 .id(id)
                 .userId(userId)

@@ -22,7 +22,7 @@ public class Expiration {
     @OneToOne
     private Ingredient ingredientId;
 
-    private static Expiration of(Long id, LocalDate expireDate, Ingredient ingredientId) {
+    public static Expiration of(Long id, LocalDate expireDate, Ingredient ingredientId) {
         return Expiration.builder()
                 .id(id)
                 .expireDate(expireDate)
