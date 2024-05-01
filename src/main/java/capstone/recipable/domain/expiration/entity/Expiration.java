@@ -2,15 +2,13 @@ package capstone.recipable.domain.expiration.entity;
 
 import capstone.recipable.domain.ingredient.entity.Ingredient;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Expiration {
@@ -23,4 +21,12 @@ public class Expiration {
 
     @OneToOne
     private Ingredient ingredientId;
+
+    private static Expiration of(Long id, LocalDate expireDate, Ingredient ingredientId) {
+        return Expiration.builder()
+                .id(id)
+                .expireDate(expireDate)
+                .ingredientId(ingredientId)
+                .build();
+    }
 }

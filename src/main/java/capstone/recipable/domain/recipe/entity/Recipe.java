@@ -1,15 +1,13 @@
 package capstone.recipable.domain.recipe.entity;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class Recipe {
@@ -31,4 +29,18 @@ public class Recipe {
 
     @ElementCollection
     private List<String> videoUrls;
+
+    private static Recipe of(Long id, String recipeImg, String recipeName, String introduce,
+                             List<String> ingredients, String recipeDetails,
+                             List<String> videoUrls) {
+        return Recipe.builder()
+                .id(id)
+                .recipeImg(recipeImg)
+                .recipeName(recipeName)
+                .introduce(introduce)
+                .ingredients(ingredients)
+                .recipeDetails(recipeDetails)
+                .videoUrls(videoUrls)
+                .build();
+    }
 }
