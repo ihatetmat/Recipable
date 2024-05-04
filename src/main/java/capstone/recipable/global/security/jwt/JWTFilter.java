@@ -1,6 +1,6 @@
 package capstone.recipable.global.security.jwt;
 
-import capstone.recipable.domain.user.dto.UserDTO;
+import capstone.recipable.domain.user.dto.KakaoUserDto;
 import capstone.recipable.global.client.oauth.dto.CustomOAuth2User;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -59,17 +59,15 @@ public class JWTFilter extends OncePerRequestFilter {
         }
 
         //토큰에서 username과 role 획득
-        String username = jwtUtil.getUsername(token);
+        //String username = jwtUtil.getUsername(token);
+        Long id = jwtUtil.getId(token);
         String role = jwtUtil.getRole(token);
 
         //userDTO를 생성하여 값 set
-        /*UserDTO userDTO = new UserDTO();
-        userDTO.setUsername(username);
-        userDTO.setRole(role);*/
-        UserDTO userDTO = new UserDTO(username, role);
+        KakaoUserDto kakaoUserDto = new KakaoUserDto(id, role);
 
         //UserDetails에 회원 정보 객체 담기
-        CustomOAuth2User customOAuth2User = new CustomOAuth2User(userDTO);
+        CustomOAuth2User customOAuth2User = new CustomOAuth2User(kakaoUserDto);
 
         //스프링 시큐리티 인증 토큰 생성
         Authentication authToken = new UsernamePasswordAuthenticationToken(customOAuth2User, null, customOAuth2User.getAuthorities());
