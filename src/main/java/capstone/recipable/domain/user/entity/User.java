@@ -26,7 +26,7 @@ public class User {
     private String userImg;
 
     //test
-    private String username;
+    private String kakaoId;
 
     private String gender;
 
@@ -34,9 +34,9 @@ public class User {
 
     private String role;
 
-    public static User of(String username, String nickname, String gender, String birthyear, String role) {
+    public static User ofKakao(String kakaoId, String nickname, String gender, String birthyear, String role) {
         return User.builder()
-                .username(username)
+                .kakaoId(kakaoId)
                 .nickname(nickname)
                 .gender(gender)
                 .birthyear(birthyear)

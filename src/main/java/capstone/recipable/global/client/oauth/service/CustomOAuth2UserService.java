@@ -1,8 +1,7 @@
 package capstone.recipable.global.client.oauth.service;
 
-import capstone.recipable.domain.user.dto.UserDTO;
+import capstone.recipable.domain.user.dto.KakaoUserDto;
 import capstone.recipable.domain.user.entity.User;
-import capstone.recipable.domain.user.entity.UserEntity;
 import capstone.recipable.domain.user.repository.UserRepository;
 import capstone.recipable.global.client.oauth.dto.CustomOAuth2User;
 import capstone.recipable.global.client.oauth.dto.OAuth2Response;
@@ -39,41 +38,22 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         }
 
         //리소스 서버에서 발급 받은 정보로 사용자를 특정할 아이디값을 만듬
-        String username = oAuth2Response.getProvider()+" "+oAuth2Response.getProviderId();
-        //UserEntity existData = userRepository.findByUsername(username);
-        User existData = userRepository.findByUsername(username);
+        String kakaoId = oAuth2Response.getProvider()+" "+oAuth2Response.getProviderId();
+        User existData = userRepository.findByKakaoId(kakaoId);
 
         if (existData == null) {
-
-            /*UserEntity userEntity = new UserEntity();
-            userEntity.setUsername(username);
-            userEntity.setName(oAuth2Response.getName());
-            userEntity.setRole("ROLE_USER");*/
-            User user = User.of(username, oAuth2Response.getName(), oAuth2Response.getGender(), oAuth2Response.getBirthyear(), "ROLE_USER");
-
+            User user = User.ofKakao(kakaoId, oAuth2Response.getName(), oAuth2Response.getGender(), oAuth2Response.getBirthyear(), "ROLE_USER");
             userRepository.save(user);
+            KakaoUserDto kakaoUserDto = new KakaoUserDto(user.getId(), kakaoId, oAuth2Response.getName(), oAuth2Response.getGender(), oAuth2Response.getBirthyear());
 
-            /*UserDTO userDTO = new UserDTO();
-            userDTO.setUsername(username);
-            userDTO.setName(oAuth2Response.getName());
-            userDTO.setRole("ROLE_USER");*/
-            UserDTO userDTO = new UserDTO(username, oAuth2Response.getName(), oAuth2Response.getGender(), oAuth2Response.getBirthyear());
-
-            return new CustomOAuth2User(userDTO);
+            return new CustomOAuth2User(kakaoUserDto);
         }
         else {
             existData.setName(oAuth2Response.getName());
-
             userRepository.save(existData);
+            KakaoUserDto kakaoUserDto = new KakaoUserDto(existData.getId(), kakaoId, oAuth2Response.getName(), oAuth2Response.getGender(), oAuth2Response.getBirthyear());
 
-            /*UserDTO userDTO = new UserDTO();
-            userDTO.setUsername(existData.getUsername());
-            userDTO.setName(oAuth2Response.getName());
-            userDTO.setRole(existData.getRole());*/
-            UserDTO userDTO = new UserDTO(username, oAuth2Response.getName(), oAuth2Response.getGender(), oAuth2Response.getBirthyear());
-
-            return new CustomOAuth2User(userDTO);
-            //return new CustomOAuth2User(userDTO);
+            return new CustomOAuth2User(kakaoUserDto);
         }
     }
 

@@ -1,5 +1,5 @@
 package capstone.recipable.global.client.oauth.dto;
-import capstone.recipable.domain.user.dto.UserDTO;
+import capstone.recipable.domain.user.dto.KakaoUserDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -11,7 +11,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CustomOAuth2User implements OAuth2User {
 
-    private final UserDTO userDto;
+    private final KakaoUserDto kakaoUserDto;
 
     //원래는 이 메서드로 받은 데이터 값을 리턴할 수 있지만 구글,네이버,카카오 등에 따라 attribute가 달라서 안쓸거
     @Override
@@ -27,7 +27,7 @@ public class CustomOAuth2User implements OAuth2User {
         collection.add(new GrantedAuthority() {
             @Override
             public String getAuthority() {
-                return userDto.getRole();
+                return kakaoUserDto.getRole();
             }
         });
         return collection;
@@ -35,11 +35,11 @@ public class CustomOAuth2User implements OAuth2User {
 
     @Override
     public String getName() {
-        return userDto.getName();
+        return kakaoUserDto.getName();
     }
 
-    public String getUsername() {
-        return userDto.getUsername();
+    public Long getId() {
+        return kakaoUserDto.getId();
     }
 
 }

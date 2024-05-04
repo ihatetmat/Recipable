@@ -1,31 +1,32 @@
 package capstone.recipable.domain.user.dto;
 
-import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-public class UserDTO {
+public class KakaoUserDto {
 
-    private String username;
+    private Long id;
 
     private String name;
 
-    //test
+    private String KakaoId;
+
     private String gender;
 
     private String birthyear;
 
     private String role;
 
-    public UserDTO (String nickname, String username, String gender, String birthyear) {
+    public KakaoUserDto(Long id, String nickname, String kakaoId, String gender, String birthyear) {
+        this.id = id;
         this.name = nickname;
-        this.username = username;
+        this.KakaoId = kakaoId;
         this.gender = gender;
         this.birthyear = birthyear;
     }
 
-    public UserDTO (String username, String role) {
-        this.name = username;
+    public KakaoUserDto(Long id, String role) {
+        this.id = id;
         this.role = role;
     }
 }
