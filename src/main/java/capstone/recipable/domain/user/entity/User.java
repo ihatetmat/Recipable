@@ -25,13 +25,28 @@ public class User {
 
     private String userImg;
 
-    public static User of(Long id, String nickname, String loginId, String password, String userImg) {
+    //test
+    private String username;
+
+    private String gender;
+
+    private String birthyear;
+
+    private String role;
+
+    public static User of(String username, String nickname, String gender, String birthyear, String role) {
         return User.builder()
-                .id(id)
+                .username(username)
                 .nickname(nickname)
-                .loginId(loginId)
-                .password(password)
-                .userImg(userImg)
+                .gender(gender)
+                .birthyear(birthyear)
+                .role(role)
+                .build();
+    }
+
+    public User setName (String nickname) {
+        return User.builder()
+                .nickname(nickname)
                 .build();
     }
 }
