@@ -25,28 +25,5 @@ public class User {
 
     private String userImg;
 
-    //test
-    private String kakaoId;
 
-    private String gender;
-
-    private String birthyear;
-
-    private String role;
-
-    public static User ofKakao(String kakaoId, String nickname, String gender, String birthyear, String role) {
-        return User.builder()
-                .kakaoId(kakaoId)
-                .nickname(nickname)
-                .gender(gender)
-                .birthyear(birthyear)
-                .role(role)
-                .build();
-    }
-
-    public User setName (String nickname) {
-        return User.builder()
-                .nickname(nickname)
-                .build();
-    }
 }
