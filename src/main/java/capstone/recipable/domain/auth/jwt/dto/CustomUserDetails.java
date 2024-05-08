@@ -1,5 +1,6 @@
 package capstone.recipable.domain.auth.jwt.dto;
 
+
 import capstone.recipable.domain.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -21,7 +22,7 @@ public class CustomUserDetails implements UserDetails {
         collection.add(new GrantedAuthority() {
             @Override
             public String getAuthority() {
-                return user.getLoginId();
+                return user.getNickname();
             }
         });
         return collection;

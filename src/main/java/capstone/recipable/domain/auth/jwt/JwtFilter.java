@@ -1,5 +1,6 @@
 package capstone.recipable.domain.auth.jwt;
 
+
 import capstone.recipable.global.error.exception.InvalidValueException;
 import capstone.recipable.global.error.status.ErrorStatus;
 import jakarta.servlet.FilterChain;
@@ -9,11 +10,13 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+@Component
 @RequiredArgsConstructor
 public class JwtFilter extends OncePerRequestFilter {
     private static final String AUTHORIZATION = "Authorization";
@@ -23,6 +26,10 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        if (request.getHeader(AUTHORIZATION) == null) {
+            filterChain.doFilter(request, response);
+            return;
+        }
         final String accessToken = getAccessTokenFromHttpServletRequest(request);
         jwtProvider.validateAccessToken(accessToken);
         final Long userId = jwtProvider.getSubject(accessToken);

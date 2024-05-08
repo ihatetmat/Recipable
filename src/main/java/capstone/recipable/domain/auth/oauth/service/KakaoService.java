@@ -56,14 +56,14 @@ public class KakaoService {
 
             // 필수 정보
             String name = jsonNode.path("properties").path("nickname").asText();
-            String profileImage = jsonNode.path("properties").path("profile_image").asText("");
-            String gender = jsonNode.path("kakao_account").path("gender").asText();
+            /*String profileImage = jsonNode.path("properties").path("profile_image").asText("");
+            String gender = jsonNode.path("kakao_account").path("gender").asText();*/
             String birthyear = jsonNode.path("kakao_account").path("birthyear").asText();
             String email = jsonNode.path("kakao_account").path("email").asText("");
 
-            System.out.println("= = = " + email + " " + gender + " " + name + " " + birthyear + " " + profileImage);
+            System.out.println("= = = " + email + " " + name);
 
-            return new CreateOauthUserRequest(name, email, gender, birthyear, profileImage);
+            return new CreateOauthUserRequest(name, email, birthyear);
         }
         return null;
     }
