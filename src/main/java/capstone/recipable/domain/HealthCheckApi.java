@@ -9,4 +9,9 @@ public class HealthCheckApi {
     public String hello() {
         return "Hello, Recipable!";
     }
+
+    @GetMapping("/")
+    public String test() {
+        return "Hello!";
+    }
 }

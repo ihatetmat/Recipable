@@ -12,7 +12,7 @@ public class CorsConfig implements WebMvcConfigurer {
 
         corsRegistry.addMapping("/**")
                 .exposedHeaders("Set-Cookie")
-                .allowedOrigins("https://recipable.store")
-                .allowedOrigins("http://localhost:5173");
+                .allowedOrigins("http://localhost:5173")
+                .allowedOrigins("https://recipable.store");
     }
 }

@@ -23,6 +23,7 @@ public class SecurityConfig {
                 .csrf(c -> c.disable())
                 .authorizeHttpRequests(c -> c
                         .requestMatchers(
+                                "/",
                                 "/api/sign-up",
                                 "/api/login",
                                 "/users/main",
@@ -34,7 +35,7 @@ public class SecurityConfig {
                 .addFilterBefore(jwtFilter, ExceptionTranslationFilter.class)
                 .cors(c -> c.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(List.of("http://localhost:3000", "https://recipable.store"));
+                    config.setAllowedOrigins(List.of("http://localhost:5173", "https://recipable.store"));
                     config.setAllowedMethods(List.of("*"));
                     config.setAllowCredentials(true);
                     config.setAllowedHeaders(List.of("*"));
