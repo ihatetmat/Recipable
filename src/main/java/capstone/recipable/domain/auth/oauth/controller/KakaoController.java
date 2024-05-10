@@ -53,7 +53,7 @@ public class KakaoController {
     @Operation(summary = "사용자 등록", description = """
             사용자 정보 등록을 진행합니다.
             
-            거주지까지 입력을 마친 정보로 DB에 사용자 정보를 등록합니다.
+            DB에 사용자 정보를 등록합니다.
             
             Jwt 토큰을 헤더에 넣어서 "OK" 메세지와 함께 반환합니다.
             """)
