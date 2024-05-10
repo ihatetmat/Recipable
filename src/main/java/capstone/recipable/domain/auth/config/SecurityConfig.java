@@ -23,18 +23,21 @@ public class SecurityConfig {
                 .csrf(c -> c.disable())
                 .authorizeHttpRequests(c -> c
                         .requestMatchers(
-                                "/api/sign-up",
-                                "/api/login",
+                                "/sign-up",
+                                "/login/kakao",
+                                "/login/local",
+                                "/send-email",
+                                "/register",
                                 "/users/main",
                                 "/swagger-ui/**",
                                 "/swagger-resources/**",
                                 "/v3/api-docs/**",
-                                "/health-check").permitAll()
+                                "/healths").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, ExceptionTranslationFilter.class)
                 .cors(c -> c.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(List.of("http://localhost:3000", "https://recipable.store"));
+                    config.setAllowedOrigins(List.of("http://localhost:3000", "https://api.yeongjin.site", "https://ddoba.vercel.app"));
                     config.setAllowedMethods(List.of("*"));
                     config.setAllowCredentials(true);
                     config.setAllowedHeaders(List.of("*"));

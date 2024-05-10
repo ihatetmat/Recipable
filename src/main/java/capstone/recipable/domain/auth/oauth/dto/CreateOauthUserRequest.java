@@ -10,5 +10,7 @@ import lombok.NoArgsConstructor;
 public class CreateOauthUserRequest {
     private String name;
     private String email;
-    private String profileImg;
+    private String gender;
+    private String birthyear;
+    private String profileImage;
 }
