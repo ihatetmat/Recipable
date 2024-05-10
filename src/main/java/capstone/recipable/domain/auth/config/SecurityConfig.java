@@ -23,6 +23,7 @@ public class SecurityConfig {
                 .csrf(c -> c.disable())
                 .authorizeHttpRequests(c -> c
                         .requestMatchers(
+                                "/",
                                 "/sign-up",
                                 "/login/kakao",
                                 "/login/local",
@@ -32,12 +33,12 @@ public class SecurityConfig {
                                 "/swagger-ui/**",
                                 "/swagger-resources/**",
                                 "/v3/api-docs/**",
-                                "/healths").permitAll()
+                                "/health-check").permitAll()
                         .anyRequest().authenticated())
                 .addFilterBefore(jwtFilter, ExceptionTranslationFilter.class)
                 .cors(c -> c.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(List.of("http://localhost:3000", "https://api.yeongjin.site", "https://ddoba.vercel.app"));
+                    config.setAllowedOrigins(List.of("http://localhost:5173", "https://recipable.store"));
                     config.setAllowedMethods(List.of("*"));
                     config.setAllowCredentials(true);
                     config.setAllowedHeaders(List.of("*"));
