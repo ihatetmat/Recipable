@@ -12,4 +12,12 @@ public class CreateUserRequest {
     private String name;
 
     private String email;
+
+    private String imageUrl;
+
+    private String gender;
+
+    private String birthyear;
+
+    private String location;
 }

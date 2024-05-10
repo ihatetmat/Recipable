@@ -7,6 +7,7 @@ import capstone.recipable.domain.user.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -36,7 +37,6 @@ public class KakaoService {
     private long ACCESS_TOKEN_EXPIRE_TIME;
 
     private final JwtProvider jwtProvider;
-    private final UserService userService;
 
     //카카오 엑세스 토큰으로 사용자 정보 받아오기
     public CreateOauthUserRequest getKakaoInfo(String accessToken) throws JsonProcessingException {
@@ -56,14 +56,14 @@ public class KakaoService {
 
             // 필수 정보
             String name = jsonNode.path("properties").path("nickname").asText();
-            /*String profileImage = jsonNode.path("properties").path("profile_image").asText("");
-            String gender = jsonNode.path("kakao_account").path("gender").asText();*/
+            String profileImage = jsonNode.path("properties").path("profile_image").asText("");
+            String gender = jsonNode.path("kakao_account").path("gender").asText();
             String birthyear = jsonNode.path("kakao_account").path("birthyear").asText();
             String email = jsonNode.path("kakao_account").path("email").asText("");
 
-            System.out.println("= = = " + email + " " + name);
+            System.out.println("= = = " + email + " " + gender + " " + name + " " + birthyear + " " + profileImage);
 
-            return new CreateOauthUserRequest(name, email, birthyear);
+            return new CreateOauthUserRequest(name, email, gender, birthyear, profileImage);
         }
         return null;
     }
@@ -112,12 +112,4 @@ public class KakaoService {
         return headers;
     }
 
-    public boolean userExists(String email) {
-        /*Optional<User> userOptional*/User user = userService.findByLoginId(email);
-        if (/*userOptional.isPresent()*/user!=null) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 }

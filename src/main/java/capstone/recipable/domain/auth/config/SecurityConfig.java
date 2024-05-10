@@ -24,8 +24,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(c -> c
                         .requestMatchers(
                                 "/",
-                                "/api/sign-up",
-                                "/api/login",
+                                "/sign-up",
+                                "/login/kakao",
+                                "/login/local",
+                                "/send-email",
+                                "/register",
                                 "/users/main",
                                 "/swagger-ui/**",
                                 "/swagger-resources/**",

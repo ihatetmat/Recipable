@@ -26,10 +26,6 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
     }
 
-    public User findByLoginId(String email) {
-        return userRepository.findByLoginId(email);
-    }
-
     public Long save(User user) {
         User savedUser = userRepository.save(user);
         return savedUser.getId();
