@@ -32,7 +32,7 @@ public class KakaoController {
             
             이미 등록된 사용자면 "login"이 출력되고
             
-            등록되지 않은 사용자면 "/api/sign-up"을 요청해서 거주지 정보를 추가로 받아줘야 합니다.
+            등록되지 않은 사용자면 "/sign-up"을 요청해서 거주지 정보를 추가로 받아줘야 합니다.
             """)
     @GetMapping("/login/kakao")
     public ResponseEntity<Object> kakaoLogin(@RequestParam String code) throws JsonProcessingException {
