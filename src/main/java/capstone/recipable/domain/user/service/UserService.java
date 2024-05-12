@@ -18,6 +18,7 @@ public class UserService {
         return User.builder()
                 .nickname(request.getName())
                 .loginId(request.getEmail())
+                .userImg(request.getImageUrl())
                 .build();
     }
 
