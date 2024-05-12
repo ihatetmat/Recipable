@@ -15,9 +15,4 @@ public class CreateUserRequest {
 
     private String imageUrl;
 
-    private String gender;
-
-    private String birthyear;
-
-    private String location;
 }
