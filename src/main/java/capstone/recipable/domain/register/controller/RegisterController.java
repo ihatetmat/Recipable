@@ -3,7 +3,8 @@ package capstone.recipable.domain.register.controller;
 import capstone.recipable.domain.auth.oauth.service.KakaoService;
 import capstone.recipable.domain.email.dto.EmailRequest;
 import capstone.recipable.domain.email.service.EmailService;
-import capstone.recipable.domain.register.dto.RegisterRequest;
+import capstone.recipable.domain.register.dto.request.RegisterRequest;
+import capstone.recipable.domain.register.dto.response.CodeResponse;
 import capstone.recipable.domain.register.service.RegisterService;
 import capstone.recipable.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,10 +32,11 @@ public class RegisterController {
             인증번호 맞게 입력했는지 확인은 프론트에서 진행합니다.
             """)
     @PostMapping("/send-email")
-    public ResponseEntity<String> sendEmail(@RequestBody EmailRequest request) {
+    public ResponseEntity<CodeResponse> sendEmail(@RequestBody EmailRequest request) {
         int authNumber = emailService.sendMail(request.getEmail());
         String number = "" + authNumber;
-        return ResponseEntity.ok().body(number);
+        CodeResponse response = new CodeResponse(number);
+        return ResponseEntity.ok().body(response);
     }
 
     //이름, 비밀번호, 생년월일, 거주지 입력

@@ -1,4 +1,4 @@
-package capstone.recipable.domain.register.dto;
+package capstone.recipable.domain.register.dto.request;
 
 import capstone.recipable.domain.user.entity.User;
 import lombok.AllArgsConstructor;
