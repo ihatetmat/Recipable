@@ -1,12 +1,10 @@
 package capstone.recipable.domain.register.service;
 
-import capstone.recipable.domain.register.dto.RegisterRequest;
+import capstone.recipable.domain.register.dto.request.RegisterRequest;
 import capstone.recipable.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDate;
 
 @RequiredArgsConstructor
 @Service
