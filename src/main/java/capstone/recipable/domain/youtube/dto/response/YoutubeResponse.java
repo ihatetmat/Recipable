@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 public class YoutubeResponse {
 
-    private String videoId;
+    private String videoUrl;
 
     private String title;
 
@@ -19,7 +19,7 @@ public class YoutubeResponse {
 
     public static YoutubeResponse of(String videoId, String title, String thumbnail) {
         return YoutubeResponse.builder()
-                .videoId(videoId)
+                .videoUrl("https://www.youtube.com/watch?v="+videoId)
                 .title(title)
                 .thumbnail(thumbnail)
                 .build();
