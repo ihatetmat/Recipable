@@ -1,4 +1,4 @@
-package capstone.recipable.domain.login.dto;
+package capstone.recipable.domain.login.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

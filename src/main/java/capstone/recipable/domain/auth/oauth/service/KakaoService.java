@@ -32,7 +32,6 @@ public class KakaoService {
     private final String KAKAO_TOKEN_URL = "https://kauth.kakao.com/oauth/token";
     private final String KAKAO_INFO_URL = "https://kapi.kakao.com/v2/user/me";
 
-    //private static final Duration ACCESS_TOKEN_DURATION = Duration.ofDays(1);
     @Value("${jwt.access-token-expired-time}")
     private long ACCESS_TOKEN_EXPIRE_TIME;
 
