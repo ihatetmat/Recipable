@@ -3,6 +3,7 @@ package capstone.recipable.domain.register.controller;
 import capstone.recipable.domain.auth.oauth.service.KakaoService;
 import capstone.recipable.domain.email.dto.EmailRequest;
 import capstone.recipable.domain.email.service.EmailService;
+import capstone.recipable.domain.login.service.LoginService;
 import capstone.recipable.domain.register.dto.request.RegisterRequest;
 import capstone.recipable.domain.register.dto.response.CodeResponse;
 import capstone.recipable.domain.register.service.RegisterService;
@@ -10,6 +11,7 @@ import capstone.recipable.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.aspectj.apache.bcel.classfile.Code;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,6 +27,7 @@ public class RegisterController {
     private final EmailService emailService;
     private final KakaoService kakaoService;
     private final UserService userService;
+    private final LoginService loginService;
 
     @Operation(summary = "인증 번호 발송", description = """
             이메일 입력 하고 인증번호 발송하면 이메일로 인증번호 발송합니다.
@@ -33,13 +36,20 @@ public class RegisterController {
             """)
     @PostMapping("/send-email")
     public ResponseEntity<CodeResponse> sendEmail(@RequestBody EmailRequest request) {
-        int authNumber = emailService.sendMail(request.getEmail());
-        String number = "" + authNumber;
-        CodeResponse response = new CodeResponse(number);
-        return ResponseEntity.ok().body(response);
+        boolean existEmail = loginService.userExists(request.getEmail());
+        if (!existEmail) {
+            int authNumber = emailService.sendMail(request.getEmail());
+            String number = "" + authNumber;
+            CodeResponse response = new CodeResponse(number);
+            return ResponseEntity.ok().body(response);
+        }
+        else{
+            CodeResponse response = new CodeResponse("이미 등록된 사용자 입니다.");
+            return ResponseEntity.ok().body(response);
+        }
     }
 
-    //이름, 비밀번호, 생년월일, 거주지 입력
+    //이름, 비밀번호, 생년월일 입력
     @Operation(summary = "사용자 정보 입력", description = """
             이메일 인증을 마치면 사용자 정보를 입력합니다.
             
