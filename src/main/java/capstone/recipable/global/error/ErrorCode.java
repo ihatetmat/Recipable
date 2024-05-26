@@ -11,7 +11,7 @@ public enum ErrorCode {
     /**
      *  400 Bad Request
      */
-
+    INVALID_BODY(HttpStatus.NOT_FOUND, "잘못된 요청입니다."),
 
     /**
      *  401 Unauthorized
