@@ -33,6 +33,13 @@ public class UserService {
         return UserInfoResponse.of(user);
     }
 
+    //user 삭제
+    @Transactional
+    public void deleteUser() {
+        Long userId = SecurityContextProvider.getAuthenticatedUserId();
+        userRepository.deleteById(userId);
+    }
+
     @Transactional
     public User createUser(CreateUserRequest request) {
         return User.builder()
