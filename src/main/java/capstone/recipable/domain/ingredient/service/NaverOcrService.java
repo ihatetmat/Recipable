@@ -1,6 +1,6 @@
-package capstone.recipable.domain.ingredient.api;
+package capstone.recipable.domain.ingredient.service;
 
-import capstone.recipable.domain.ingredient.api.dto.response.IngredientListResponse;
+import capstone.recipable.domain.ingredient.controller.dto.response.IngredientListResponse;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
@@ -13,13 +13,11 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Component
-public class NaverOcrController {
+public class NaverOcrService {
     @Value("${naver.service.url}")
     private String url;
 
@@ -27,11 +25,18 @@ public class NaverOcrController {
     private String secretKey;
 
 
-    public IngredientListResponse callApi(MultipartFile multipartFile, String ext) {
+    public List<String> callApi(MultipartFile multipartFile) {
         String apiURL = url;
         List<String> parseData = null;
 
         log.info("callApi Start!");
+        Map<String, String> mimeToExt = new HashMap<>();
+        mimeToExt.put("image/jpeg", "jpg");
+        mimeToExt.put("image/png", "png");
+        mimeToExt.put("image/gif", "gif");
+
+        String contentType = multipartFile.getContentType();
+        String ext = mimeToExt.getOrDefault(contentType, "jpg");
 
         try {
             URL url = new URL(apiURL);
@@ -79,10 +84,10 @@ public class NaverOcrController {
             parseData = jsonParse(response);
 
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
 
-        return IngredientListResponse.of(parseData);
+        return parseData;
     }
 
     private static void writeMultiPart(OutputStream out, String jsonMessage, MultipartFile multipartFile, String boundary) throws IOException {
