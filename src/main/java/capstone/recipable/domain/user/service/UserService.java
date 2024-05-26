@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class UserService {
 
     private final UserRepository userRepository;
@@ -25,6 +25,7 @@ public class UserService {
     }
 
     //user 정보 수정
+    @Transactional
     public UserInfoResponse updateUserInfo(UpdateUserInfo request) {
         Long userId = SecurityContextProvider.getAuthenticatedUserId();
         User user = findById(userId);
@@ -32,6 +33,7 @@ public class UserService {
         return UserInfoResponse.of(user);
     }
 
+    @Transactional
     public User createUser(CreateUserRequest request) {
         return User.builder()
                 .nickname(request.getName())
@@ -45,6 +47,7 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
     }
 
+    @Transactional
     public Long save(User user) {
         User savedUser = userRepository.save(user);
         return savedUser.getId();
