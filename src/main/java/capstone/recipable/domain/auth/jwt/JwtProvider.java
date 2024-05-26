@@ -1,8 +1,8 @@
 package capstone.recipable.domain.auth.jwt;
 
 
-import capstone.recipable.global.error.exception.InvalidValueException;
-import capstone.recipable.global.error.status.ErrorStatus;
+import capstone.recipable.global.error.ApplicationException;
+import capstone.recipable.global.error.ErrorCode;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
@@ -24,7 +24,7 @@ public class JwtProvider {
         try {
             getJwtParser().parseClaimsJws(accessToken);
         } catch (Exception e) {
-            throw new InvalidValueException(ErrorStatus._UNAUTHORIZED);
+            throw new ApplicationException(ErrorCode.UNAUTHORIZED_USER);
         }
     }
 

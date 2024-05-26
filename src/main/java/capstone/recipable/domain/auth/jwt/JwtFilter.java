@@ -1,8 +1,8 @@
 package capstone.recipable.domain.auth.jwt;
 
 
-import capstone.recipable.global.error.exception.InvalidValueException;
-import capstone.recipable.global.error.status.ErrorStatus;
+import capstone.recipable.global.error.ApplicationException;
+import capstone.recipable.global.error.ErrorCode;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,7 +42,7 @@ public class JwtFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(accessToken) && accessToken.startsWith(BEARER)) {
             return accessToken.substring(BEARER.length());
         }
-        throw new InvalidValueException(ErrorStatus._UNAUTHORIZED);
+        throw new ApplicationException(ErrorCode.UNAUTHORIZED_USER);
     }
 
     private void setAuthentication(HttpServletRequest request, Long userId) {

@@ -1,8 +1,8 @@
 package capstone.recipable.domain.youtube.service;
 
 import capstone.recipable.domain.youtube.dto.response.YoutubeResponse;
-import capstone.recipable.global.error.exception.InvalidValueException;
-import capstone.recipable.global.error.status.ErrorStatus;
+import capstone.recipable.global.error.ApplicationException;
+import capstone.recipable.global.error.ErrorCode;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.youtube.YouTube;
@@ -56,7 +56,7 @@ public class YoutubeService {
             return responses;
         }
         else{
-            throw new InvalidValueException(ErrorStatus.INVALID_BODY);
+            throw new ApplicationException(ErrorCode.INVALID_BODY);
 
         }
     }
