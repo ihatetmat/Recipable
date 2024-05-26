@@ -37,4 +37,17 @@ public class UserController {
         UserInfoResponse response = userService.updateUserInfo(request);
         return SuccessResponse.of(response);
     }
+
+    @Operation(summary = "사용자 정보 삭제", description = """
+            사용자 정보 삭제 api입니다.
+            
+            회원탈퇴 시 호출하면 됩니다.
+            
+            회원탈퇴가 정상적으로 처리될 경우 회원 탈퇴 성공 메시지를 반환합니다.
+            """)
+    @DeleteMapping("/info")
+    ResponseEntity<SuccessResponse<String>> deleteUser() {
+        userService.deleteUser();
+        return SuccessResponse.of("회원 탈퇴 성공");
+    }
 }
