@@ -1,4 +1,4 @@
-package capstone.recipable.domain.email.config;
+package capstone.recipable.domain.auth.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

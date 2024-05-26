@@ -1,6 +1,6 @@
-package capstone.recipable.domain.register.service;
+package capstone.recipable.domain.auth.service;
 
-import capstone.recipable.domain.register.dto.request.RegisterRequest;
+import capstone.recipable.domain.auth.dto.request.RegisterRequest;
 import capstone.recipable.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

@@ -1,4 +1,4 @@
-package capstone.recipable.domain.email.dto;
+package capstone.recipable.domain.auth.dto.request;
 
 import lombok.Getter;
 
