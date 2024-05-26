@@ -25,4 +25,7 @@ public class User {
 
     private String userImg;
 
+    public void update(String nickname) {
+        this.nickname = nickname;
+    }
 }

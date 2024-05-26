@@ -3,7 +3,7 @@ package capstone.recipable.domain.auth.oauth.controller;
 import capstone.recipable.domain.auth.oauth.dto.CreateOauthUserRequest;
 import capstone.recipable.domain.auth.oauth.dto.CreateUserRequest;
 import capstone.recipable.domain.auth.oauth.service.KakaoService;
-import capstone.recipable.domain.login.service.LoginService;
+import capstone.recipable.domain.auth.service.LoginService;
 import capstone.recipable.domain.user.entity.User;
 import capstone.recipable.domain.user.repository.UserRepository;
 import capstone.recipable.domain.user.service.UserService;

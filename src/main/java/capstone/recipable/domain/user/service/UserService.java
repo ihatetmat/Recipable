@@ -1,6 +1,9 @@
 package capstone.recipable.domain.user.service;
 
+import capstone.recipable.domain.auth.jwt.SecurityContextProvider;
 import capstone.recipable.domain.auth.oauth.dto.CreateUserRequest;
+import capstone.recipable.domain.user.dto.request.UpdateUserInfo;
+import capstone.recipable.domain.user.dto.response.UserInfoResponse;
 import capstone.recipable.domain.user.entity.User;
 import capstone.recipable.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -9,11 +12,35 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
-@Transactional
+@Transactional(readOnly = true)
 public class UserService {
 
     private final UserRepository userRepository;
 
+    //user 정보 조회 dto화
+    public UserInfoResponse getUserInfo() {
+        Long userId = SecurityContextProvider.getAuthenticatedUserId();
+        User user = findById(userId);
+        return UserInfoResponse.of(user);
+    }
+
+    //user 정보 수정
+    @Transactional
+    public UserInfoResponse updateUserInfo(UpdateUserInfo request) {
+        Long userId = SecurityContextProvider.getAuthenticatedUserId();
+        User user = findById(userId);
+        user.update(request.getNickname());
+        return UserInfoResponse.of(user);
+    }
+
+    //user 삭제
+    @Transactional
+    public void deleteUser() {
+        Long userId = SecurityContextProvider.getAuthenticatedUserId();
+        userRepository.deleteById(userId);
+    }
+
+    @Transactional
     public User createUser(CreateUserRequest request) {
         return User.builder()
                 .nickname(request.getName())
@@ -27,6 +54,7 @@ public class UserService {
                 .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
     }
 
+    @Transactional
     public Long save(User user) {
         User savedUser = userRepository.save(user);
         return savedUser.getId();

@@ -1,17 +1,16 @@
-package capstone.recipable.domain.register.controller;
+package capstone.recipable.domain.auth.controller;
 
 import capstone.recipable.domain.auth.oauth.service.KakaoService;
-import capstone.recipable.domain.email.dto.EmailRequest;
-import capstone.recipable.domain.email.service.EmailService;
-import capstone.recipable.domain.login.service.LoginService;
-import capstone.recipable.domain.register.dto.request.RegisterRequest;
-import capstone.recipable.domain.register.dto.response.CodeResponse;
-import capstone.recipable.domain.register.service.RegisterService;
+import capstone.recipable.domain.auth.dto.request.EmailRequest;
+import capstone.recipable.domain.auth.service.EmailService;
+import capstone.recipable.domain.auth.service.LoginService;
+import capstone.recipable.domain.auth.dto.request.RegisterRequest;
+import capstone.recipable.domain.auth.dto.response.EmailCodeResponse;
+import capstone.recipable.domain.auth.service.RegisterService;
 import capstone.recipable.domain.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.apache.bcel.classfile.Code;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,16 +34,16 @@ public class RegisterController {
             인증번호 맞게 입력했는지 확인은 프론트에서 진행합니다.
             """)
     @PostMapping("/send-email")
-    public ResponseEntity<CodeResponse> sendEmail(@RequestBody EmailRequest request) {
+    public ResponseEntity<EmailCodeResponse> sendEmail(@RequestBody EmailRequest request) {
         boolean existEmail = loginService.userExists(request.getEmail());
         if (!existEmail) {
             int authNumber = emailService.sendMail(request.getEmail());
             String number = "" + authNumber;
-            CodeResponse response = new CodeResponse(number);
+            EmailCodeResponse response = new EmailCodeResponse(number);
             return ResponseEntity.ok().body(response);
         }
         else{
-            CodeResponse response = new CodeResponse("이미 등록된 사용자 입니다.");
+            EmailCodeResponse response = new EmailCodeResponse("이미 등록된 사용자 입니다.");
             return ResponseEntity.ok().body(response);
         }
     }

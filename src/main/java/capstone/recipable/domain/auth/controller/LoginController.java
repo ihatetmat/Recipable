@@ -1,9 +1,9 @@
-package capstone.recipable.domain.login.controller;
+package capstone.recipable.domain.auth.controller;
 
 
 import capstone.recipable.domain.auth.oauth.service.KakaoService;
-import capstone.recipable.domain.login.dto.request.LoginRequest;
-import capstone.recipable.domain.login.service.LoginService;
+import capstone.recipable.domain.auth.dto.request.LoginRequest;
+import capstone.recipable.domain.auth.service.LoginService;
 import capstone.recipable.domain.user.entity.User;
 import capstone.recipable.domain.user.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
