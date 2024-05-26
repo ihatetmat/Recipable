@@ -1,5 +1,6 @@
 package capstone.recipable.domain.youtube.service;
 
+import capstone.recipable.domain.auth.jwt.SecurityContextProvider;
 import capstone.recipable.domain.youtube.dto.response.YoutubeResponse;
 import capstone.recipable.global.error.ApplicationException;
 import capstone.recipable.global.error.ErrorCode;
@@ -8,6 +9,7 @@ import com.google.api.client.json.jackson2.JacksonFactory;
 import com.google.api.services.youtube.YouTube;
 import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class YoutubeService {
 
@@ -23,6 +26,7 @@ public class YoutubeService {
     private String apiKey;
 
     public List<YoutubeResponse> searchVideo(String query) throws IOException {
+        Long userId = SecurityContextProvider.getAuthenticatedUserId();
         // JSON 데이터를 처리하기 위한 JsonFactory 객체 생성
         JsonFactory jsonFactory = new JacksonFactory();
 
