@@ -24,8 +24,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(c -> c
                         .requestMatchers(
                                 "/",
-                                "/api/sign-up",
-                                "/api/login",
+                                "/sign-up",
+                                "/login/kakao",
+                                "/login/local",
+                                "/send-email",
+                                "/register",
                                 "/users/main",
                                 "/swagger-ui/**",
                                 "/swagger-resources/**",
@@ -40,6 +43,7 @@ public class SecurityConfig {
                     config.setAllowCredentials(true);
                     config.setAllowedHeaders(List.of("*"));
                     config.setMaxAge(3600L);
+                    config.addExposedHeader("Authorization");
                     return config;
                 }))
                 .headers(c -> c.frameOptions(c2 -> c2.disable()));

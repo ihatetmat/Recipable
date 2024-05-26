@@ -1,4 +1,4 @@
-package capstone.recipable.domain.auth.oauth.dto;
+package capstone.recipable.domain.auth.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,12 +7,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class CreateUserRequest {
-
-    private String name;
+public class LoginRequest {
 
     private String email;
-
-    private String imageUrl;
-
+    private String password;
 }

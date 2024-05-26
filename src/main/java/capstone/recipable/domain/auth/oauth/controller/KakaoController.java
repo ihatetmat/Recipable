@@ -3,9 +3,12 @@ package capstone.recipable.domain.auth.oauth.controller;
 import capstone.recipable.domain.auth.oauth.dto.CreateOauthUserRequest;
 import capstone.recipable.domain.auth.oauth.dto.CreateUserRequest;
 import capstone.recipable.domain.auth.oauth.service.KakaoService;
+import capstone.recipable.domain.auth.service.LoginService;
 import capstone.recipable.domain.user.entity.User;
+import capstone.recipable.domain.user.repository.UserRepository;
 import capstone.recipable.domain.user.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -16,29 +19,28 @@ import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api")
 @Tag(name = "oauth", description = "로그인 관련 api")
 public class KakaoController {
 
+    private final UserRepository userRepository;
     private final UserService userService;
     private final KakaoService kakaoService;
+    private final LoginService loginService;
 
     @Operation(summary = "카카오 로그인", description = """
             카카오 소셜 로그인을 진행합니다.
             
             이미 등록된 사용자면 "login"이 출력되고
             
-            등록되지 않은 사용자면 "/api/sign-up"을 요청해서 거주지 정보를 추가로 받아줘야 합니다.
+            등록되지 않은 사용자면 "/sign-up"을 요청해서 거주지 정보를 추가로 받아줘야 합니다.
             """)
     @GetMapping("/login/kakao")
     public ResponseEntity<Object> kakaoLogin(@RequestParam String code) throws JsonProcessingException {
         String kakaoAccessToken = kakaoService.getKakaoAccessToken(code); //인가코드로 카카오 엑세스 토큰 받아오기
         CreateOauthUserRequest request = kakaoService.getKakaoInfo(kakaoAccessToken); //엑세스 토큰으로 카카오 사용자 정보 받아오기
-        boolean checkExist = kakaoService.userExists(request.getEmail());
+        boolean checkExist = loginService.userExists(request.getEmail());
         if(checkExist) { //이미 가입된 회원
-            /*Optional<User> userOptional*/
-            User user = userService.findByLoginId(request.getEmail());
-            //User user = userOptional.get();
+            User user = userRepository.findByLoginId(request.getEmail());
             HttpHeaders headers = kakaoService.getLoginHeader(user);
 
             return ResponseEntity.ok().headers(headers).body("login");
@@ -51,7 +53,7 @@ public class KakaoController {
     @Operation(summary = "사용자 등록", description = """
             사용자 정보 등록을 진행합니다.
             
-            거주지까지 입력을 마친 정보로 DB에 사용자 정보를 등록합니다.
+            DB에 사용자 정보를 등록합니다.
             
             Jwt 토큰을 헤더에 넣어서 "OK" 메세지와 함께 반환합니다.
             """)
