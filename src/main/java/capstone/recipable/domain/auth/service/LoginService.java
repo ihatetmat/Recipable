@@ -1,4 +1,4 @@
-package capstone.recipable.domain.login.service;
+package capstone.recipable.domain.auth.service;
 
 
 import capstone.recipable.domain.user.entity.User;

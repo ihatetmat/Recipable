@@ -1,4 +1,4 @@
-package capstone.recipable.domain.email.service;
+package capstone.recipable.domain.auth.service;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

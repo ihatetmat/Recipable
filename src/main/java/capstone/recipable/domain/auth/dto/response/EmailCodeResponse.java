@@ -1,4 +1,4 @@
-package capstone.recipable.domain.register.dto.response;
+package capstone.recipable.domain.auth.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-public class CodeResponse {
+public class EmailCodeResponse {
     private String code;
 
 }
