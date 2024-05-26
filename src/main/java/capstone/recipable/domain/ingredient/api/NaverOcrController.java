@@ -1,6 +1,6 @@
-package capstone.recipable.domain.recipe.api;
+package capstone.recipable.domain.ingredient.api;
 
-import capstone.recipable.domain.recipe.util.JsonUtill;
+import capstone.recipable.domain.ingredient.api.dto.response.IngredientListResponse;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
@@ -8,33 +8,27 @@ import net.minidev.json.parser.JSONParser;
 import net.minidev.json.parser.ParseException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @Slf4j
 @Component
-public class NaverOcrApi {
+public class NaverOcrController {
     @Value("${naver.service.url}")
     private String url;
 
-    /**
-     * 네이버 ocr api 호출한다
-     * @param {string} type 호출 메서드 타입
-     * @param {string} filePath 파일 경로
-     * @param {string} naver_secretKey 네이버 시크릿키 값
-     * @param {string} ext 확장자
-     * @returns {List} 추출 text list
-     */
-    public List<String> callApi(String type, String filePath, String naver_secretKey, String ext) {
+    @Value("${naver.service.secretKey}")
+    private String secretKey;
+
+
+    public IngredientListResponse callApi(MultipartFile multipartFile, String ext) {
         String apiURL = url;
-        String secretKey = naver_secretKey;
-        String imageFile = filePath;
         List<String> parseData = null;
 
         log.info("callApi Start!");
@@ -46,7 +40,7 @@ public class NaverOcrApi {
             con.setDoInput(true);
             con.setDoOutput(true);
             con.setReadTimeout(30000);
-            con.setRequestMethod(type);
+            con.setRequestMethod("POST");
             String boundary = "----" + UUID.randomUUID().toString().replaceAll("-", "");
             con.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
             con.setRequestProperty("X-OCR-SECRET", secretKey);
@@ -64,10 +58,9 @@ public class NaverOcrApi {
             String postParams = json.toString();
 
             con.connect();
-            DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-            File file = new File(imageFile);
-            writeMultiPart(wr, postParams, file, boundary);
-            wr.close();
+            try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
+                writeMultiPart(wr, postParams, multipartFile, boundary);
+            }
 
             int responseCode = con.getResponseCode();
             BufferedReader br;
@@ -76,51 +69,42 @@ public class NaverOcrApi {
             } else {
                 br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
             }
+
             String inputLine;
             StringBuffer response = new StringBuffer();
             while ((inputLine = br.readLine()) != null) {
                 response.append(inputLine);
             }
             br.close();
-            System.out.println("response = " + response);
-            parseData = jsonparse(response);
-            System.out.println("parseData = " + parseData);
-
+            parseData = jsonParse(response);
 
         } catch (Exception e) {
             System.out.println(e);
         }
-        return parseData;
+
+        return IngredientListResponse.of(parseData);
     }
-    /**
-     * writeMultiPart
-     * @param {OutputStream} out 데이터를 출력
-     * @param {string} jsonMessage 요청 params
-     * @param {File} file 요청 파일
-     * @param {String} boundary 경계
-     */
-    private static void writeMultiPart(OutputStream out, String jsonMessage, File file, String boundary) throws
-            IOException {
+
+    private static void writeMultiPart(OutputStream out, String jsonMessage, MultipartFile multipartFile, String boundary) throws IOException {
         StringBuilder sb = new StringBuilder();
         sb.append("--").append(boundary).append("\r\n");
-        sb.append("Content-Disposition:form-data; name=\"message\"\r\n\r\n");
+        sb.append("Content-Disposition: form-data; name=\"message\"\r\n\r\n");
         sb.append(jsonMessage);
         sb.append("\r\n");
 
         out.write(sb.toString().getBytes("UTF-8"));
         out.flush();
 
-        if (file != null && file.isFile()) {
+        if (multipartFile != null && !multipartFile.isEmpty()) {
             out.write(("--" + boundary + "\r\n").getBytes("UTF-8"));
             StringBuilder fileString = new StringBuilder();
-            fileString
-                    .append("Content-Disposition:form-data; name=\"file\"; filename=");
-            fileString.append("\"" + file.getName() + "\"\r\n");
-            fileString.append("Content-Type: application/octet-stream\r\n\r\n");
+            fileString.append("Content-Disposition: form-data; name=\"file\"; filename=\"")
+                    .append(multipartFile.getOriginalFilename()).append("\"\r\n");
+            fileString.append("Content-Type: ").append(multipartFile.getContentType()).append("\r\n\r\n");
             out.write(fileString.toString().getBytes("UTF-8"));
             out.flush();
 
-            try (FileInputStream fis = new FileInputStream(file)) {
+            try (InputStream fis = multipartFile.getInputStream()) {
                 byte[] buffer = new byte[8192];
                 int count;
                 while ((count = fis.read(buffer)) != -1) {
@@ -133,47 +117,21 @@ public class NaverOcrApi {
         }
         out.flush();
     }
-    /**
-     * 데이터 가공
-     * @param {StringBuffer} response 응답값
-     * @returns {List} result text list
-     */
-//    private static List<String> jsonparse(StringBuffer response) throws ParseException {
-//        //json 파싱
-//        JSONParser jp = new JSONParser();
-//        JSONObject jobj = (JSONObject) jp.parse(response.toString());
-//        //images 배열 obj 화
-//        JSONArray JSONArrayPerson = (JSONArray)jobj.get("images");
-//        JSONObject JSONObjImage = (JSONObject)JSONArrayPerson.get(0);
-//        JSONArray s = (JSONArray) JSONObjImage.get("fields");
-//        System.out.println("s = " + s);
-//        //
-//        List<Map<String, Object>> m = JsonUtill.getListMapFromJsonArray(s);
-//        System.out.println("m = " + m);
-//        List<String> result = new ArrayList<>();
-//        for (Map<String, Object> as : m) {
-//            result.add((String) as.get("inferText"));
-//        }
-//        return result;
-//    }
-    private List<String> jsonparse(StringBuffer response) throws ParseException {
+
+    private List<String> jsonParse(StringBuffer response) throws ParseException {
         // json 파싱
         JSONParser parser = new JSONParser();
         JSONObject responseObject = (JSONObject) parser.parse(response.toString());
         JSONArray imagesArray = (JSONArray) responseObject.get("images");
         List<String> productNames = new ArrayList<>();
-
-        // images 배열 내 각 요소에서 상품명 추출
         for (Object imageObj : imagesArray) {
             JSONObject image = (JSONObject) imageObj;
             JSONObject receipt = (JSONObject) image.get("receipt");
             JSONObject result = (JSONObject) receipt.get("result");
             JSONArray subResults = (JSONArray) result.get("subResults");
-
             for (Object subResultObj : subResults) {
                 JSONObject subResult = (JSONObject) subResultObj;
                 JSONArray items = (JSONArray) subResult.get("items");
-
                 for (Object itemObj : items) {
                     JSONObject item = (JSONObject) itemObj;
                     JSONObject name = (JSONObject) item.get("name");
@@ -182,7 +140,6 @@ public class NaverOcrApi {
                 }
             }
         }
-
         return productNames;
     }
 }
