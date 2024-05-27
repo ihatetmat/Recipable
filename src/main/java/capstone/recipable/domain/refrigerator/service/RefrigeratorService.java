@@ -30,7 +30,6 @@ import java.util.List;
 @RequiredArgsConstructor
 @Service
 @Transactional(readOnly = true)
-@Slf4j
 public class RefrigeratorService {
     private final UserRepository userRepository;
     private final RefrigeratorRepository refrigeratorRepository;
@@ -43,20 +42,23 @@ public class RefrigeratorService {
         User user = userRepository.findById(SecurityContextProvider.getAuthenticatedUserId())
                 .orElseThrow(() -> new ApplicationException(ErrorCode.USER_NOT_FOUND));
 
-        Refrigerator refrigerator = refrigeratorRepository.findByUserId(user)
-                .orElseThrow(() -> new ApplicationException(ErrorCode.REFRIGERATOR_NOT_FOUND));
+        Refrigerator refrigerator = refrigeratorRepository.findByUserId(user).orElse(null);
+//                .orElseThrow(() -> new ApplicationException(ErrorCode.REFRIGERATOR_NOT_FOUND));
 
+        if (refrigerator == null) {
+            return null;
+        }
         List<Category> allCategoryByRefrigerator = categoryRepository.findAllByRefrigeratorId(refrigerator);
+
         List<RefrigeratorResponse> refrigeratorResponses = allCategoryByRefrigerator.stream()
                 .map(category -> {
                     List<Ingredient> ingredients = ingredientRepository.findAllByCategoryId(category);
 
                     List<RefrigeratorDetailResponse> refrigeratorDetails = ingredients.stream()
                             .map(ingredient -> {
-                                Expiration expiration = expirationRepository.findByIngredientId(ingredient)
-                                        .orElseThrow(() -> new ApplicationException(ErrorCode.EXPIRATION_NOT_FOUND));
+                                Expiration expiration = expirationRepository.findByIngredientId(ingredient).orElse(null);
 
-                                Long remainingExpiration = ChronoUnit.DAYS.between(LocalDate.now(), expiration.getExpireDate());
+                                Long remainingExpiration = expiration != null ? ChronoUnit.DAYS.between(LocalDate.now(), expiration.getExpireDate()) : null;
                                 RefrigeratorDetailResponse refrigeratorDetail = RefrigeratorDetailResponse.of(ingredient.getId(), ingredient.getIngredientName(), remainingExpiration, ingredient.getIngredientImage());
 
                                 return refrigeratorDetail;
@@ -68,8 +70,22 @@ public class RefrigeratorService {
     }
 
     public IngredientDetailResponse getIngredient(Long ingredientId) {
+        User user = userRepository.findById(SecurityContextProvider.getAuthenticatedUserId())
+                .orElseThrow(() -> new ApplicationException(ErrorCode.USER_NOT_FOUND));
+
+        Refrigerator refrigerator = refrigeratorRepository.findByUserId(user).orElse(null);
+//                .orElseThrow(() -> new ApplicationException(ErrorCode.REFRIGERATOR_NOT_FOUND));
+
+        if (refrigerator == null) {
+            return null;
+        }
+
         Ingredient ingredient = ingredientRepository.findById(ingredientId)
                 .orElseThrow(() -> new ApplicationException(ErrorCode.INGREDIENT_NOT_FOUND));
+
+        if (!ingredient.getCategoryId().getRefrigeratorId().equals(refrigerator)) {
+            throw new ApplicationException(ErrorCode.WRONG_USER);
+        }
 
         Expiration expiration = expirationRepository.findByIngredientId(ingredient)
                 .orElseThrow(() -> new ApplicationException(ErrorCode.EXPIRATION_NOT_FOUND));
