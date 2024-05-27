@@ -68,16 +68,18 @@ public class RefrigeratorController {
         return SuccessResponse.of("식재료가 성공적으로 삭제 되었습니다.");
     }
 
-    @Operation(summary = "냉장고에 재료 추가 api", description = """
+    @Operation(summary = "냉장고에 재료 추가 api(영수증 반환 결과를 토대로)", description = """
                         
             영수증분석을 통해 나온 재료들을 통해서 냉장고에 재료를 추가합니다.
                         
             """)
     @PostMapping("/receipt")
-    public ResponseEntity<SuccessResponse<String>> updateIngredient(@RequestBody CreateIngredientListRequest createIngredientListRequest) {
+    public ResponseEntity<SuccessResponse<String>> createIngredientByOcr(@RequestBody CreateIngredientListRequest createIngredientListRequest) {
         createIngredientService.createIngredient(createIngredientListRequest);
         return SuccessResponse.of("식재료가 성공적으로 냉장고에 추가되었습니다.");
     }
+
+
 
 
 
