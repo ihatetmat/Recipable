@@ -20,19 +20,21 @@ public class Ingredient {
 
     private String ingredientImage;
 
+    private String memo;
+
     @ManyToOne(fetch=FetchType.LAZY)
     private Category categoryId;
 
 //    @OneToOne
 //    private Expiration expirationId;
 
-    public static Ingredient of(Long id, String ingredientName, String ingredientImage, Category categoryId) {
+    public static Ingredient of(Long id, String ingredientName, String ingredientImage, String memo, Category categoryId) {
         return Ingredient.builder()
                 .id(id)
                 .ingredientName(ingredientName)
-                .categoryId(categoryId)
+                .memo(memo)
                 .ingredientImage(ingredientImage)
-//                .expirationId(expirationId)
+                .categoryId(categoryId)
                 .build();
     }
 
