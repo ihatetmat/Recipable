@@ -1,5 +1,6 @@
 package capstone.recipable.domain.refrigerator.controller;
 
+import capstone.recipable.domain.ingredient.controller.dto.request.UpdateIngredientRequest;
 import capstone.recipable.domain.ingredient.controller.dto.response.IngredientDetailResponse;
 import capstone.recipable.domain.refrigerator.dto.response.RefrigeratorListResponse;
 import capstone.recipable.domain.refrigerator.service.RefrigeratorService;
@@ -36,6 +37,19 @@ public class RefrigeratorController {
     @GetMapping("/{ingredientId}")
     public ResponseEntity<SuccessResponse<IngredientDetailResponse>> getIngredients(@PathVariable Long ingredientId) {
         IngredientDetailResponse ingredientDetail = refrigeratorService.getIngredient(ingredientId);
+        return SuccessResponse.of(ingredientDetail);
+    }
+
+    @Operation(summary = "냉장고 안 식재료 수정 api", description = """
+                        
+            사용자 냉장고 안에 있는 식재료를 수정 합니다.
+                        
+            """)
+    @PatchMapping("/{ingredientId}")
+    public ResponseEntity<SuccessResponse<IngredientDetailResponse>> updateIngredient(@PathVariable Long ingredientId,
+                                                                                      @RequestBody UpdateIngredientRequest updateIngredientRequest) {
+
+        IngredientDetailResponse ingredientDetail = refrigeratorService.updateIngredient(ingredientId, updateIngredientRequest);
         return SuccessResponse.of(ingredientDetail);
     }
 

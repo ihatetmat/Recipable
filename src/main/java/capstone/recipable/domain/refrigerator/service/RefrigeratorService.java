@@ -5,6 +5,7 @@ import capstone.recipable.domain.category.entity.Category;
 import capstone.recipable.domain.category.repository.CategoryRepository;
 import capstone.recipable.domain.expiration.entity.Expiration;
 import capstone.recipable.domain.expiration.repository.ExpirationRepository;
+import capstone.recipable.domain.ingredient.controller.dto.request.UpdateIngredientRequest;
 import capstone.recipable.domain.ingredient.controller.dto.response.IngredientDetailResponse;
 import capstone.recipable.domain.ingredient.entity.Ingredient;
 import capstone.recipable.domain.ingredient.repository.IngredientRepository;
@@ -72,6 +73,25 @@ public class RefrigeratorService {
 
         Expiration expiration = expirationRepository.findByIngredientId(ingredient)
                 .orElseThrow(() -> new ApplicationException(ErrorCode.EXPIRATION_NOT_FOUND));
+
+        return IngredientDetailResponse.of(ingredient.getIngredientName(), ingredient.getCategoryId().getCategoryName(),
+                expiration.getExpireDate(), ingredient.getMemo());
+    }
+
+    @Transactional
+    public IngredientDetailResponse updateIngredient(Long ingredientId, UpdateIngredientRequest updateIngredientRequest) {
+        Ingredient ingredient = ingredientRepository.findById(ingredientId)
+                .orElseThrow(() -> new ApplicationException(ErrorCode.INGREDIENT_NOT_FOUND));
+
+        Expiration expiration = expirationRepository.findByIngredientId(ingredient)
+                .orElseThrow(() -> new ApplicationException(ErrorCode.EXPIRATION_NOT_FOUND));
+
+        String requestedCategoryName = updateIngredientRequest.categoryName();
+        Category category = categoryRepository.findByCategoryName(requestedCategoryName)
+                .orElseThrow(() -> new ApplicationException(ErrorCode.CATEGORY_NOT_FOUND));
+
+        ingredient.updateIngredientInfo(updateIngredientRequest.ingredientName(), updateIngredientRequest.ingredientImage(), updateIngredientRequest.memo(), category);
+        expiration.updateExpirationDate(updateIngredientRequest.expirationDay());
 
         return IngredientDetailResponse.of(ingredient.getIngredientName(), ingredient.getCategoryId().getCategoryName(),
                 expiration.getExpireDate(), ingredient.getMemo());
