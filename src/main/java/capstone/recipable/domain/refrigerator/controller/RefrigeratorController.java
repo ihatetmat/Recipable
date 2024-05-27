@@ -79,10 +79,14 @@ public class RefrigeratorController {
         return SuccessResponse.of("식재료가 성공적으로 냉장고에 추가되었습니다.");
     }
 
-
-
-
-
-
-
+    @Operation(summary = "냉장고에 들어갈 식재료 직접 추가 api", description = """
+                        
+            사용자가 직접 입력을 통하여 냉장고에 식재료를 입력하여 추가합니다.
+                        
+            """)
+    @PostMapping()
+    public ResponseEntity<SuccessResponse<String>> createIngredientByDirect(@RequestBody CreateIngredientListRequest createIngredientListRequest) {
+        createIngredientService.createIngredient(createIngredientListRequest);
+        return SuccessResponse.of("식재료가 성공적으로 냉장고에 추가되었습니다.");
+    }
 }
