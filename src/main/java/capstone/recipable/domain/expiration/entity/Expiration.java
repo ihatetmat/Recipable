@@ -19,7 +19,7 @@ public class Expiration {
 
     private LocalDate expireDate;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Ingredient ingredientId;
 
     public static Expiration of(Long id, LocalDate expireDate, Ingredient ingredientId) {

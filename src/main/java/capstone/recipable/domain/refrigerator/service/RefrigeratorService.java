@@ -96,4 +96,13 @@ public class RefrigeratorService {
         return IngredientDetailResponse.of(ingredient.getIngredientName(), ingredient.getCategoryId().getCategoryName(),
                 expiration.getExpireDate(), ingredient.getMemo());
     }
+
+    @Transactional
+    public void deleteIngredient(Long ingredientId) {
+        Ingredient ingredient = ingredientRepository.findById(ingredientId)
+                .orElseThrow(() -> new ApplicationException(ErrorCode.INGREDIENT_NOT_FOUND));
+        expirationRepository.delete(
+                expirationRepository.findByIngredientId(ingredient).orElseThrow(() -> new ApplicationException(ErrorCode.EXPIRATION_NOT_FOUND))
+        );
+    }
 }

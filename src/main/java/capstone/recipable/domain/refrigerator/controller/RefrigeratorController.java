@@ -53,4 +53,16 @@ public class RefrigeratorController {
         return SuccessResponse.of(ingredientDetail);
     }
 
+    @Operation(summary = "냉장고 안 식재료 삭제 api", description = """
+                        
+            사용자 냉장고 안에 있는 식재료를 삭제 합니다.
+                        
+            """)
+    @DeleteMapping("/{ingredientId}")
+    public ResponseEntity<SuccessResponse<String>> updateIngredient(@PathVariable Long ingredientId) {
+
+        refrigeratorService.deleteIngredient(ingredientId);
+        return SuccessResponse.of("식재료가 성공적으로 삭제 되었습니다.");
+    }
+
 }
