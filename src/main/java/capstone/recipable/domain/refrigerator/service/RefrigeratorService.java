@@ -57,7 +57,7 @@ public class RefrigeratorService {
                                         .orElseThrow(() -> new ApplicationException(ErrorCode.EXPIRATION_NOT_FOUND));
 
                                 Long remainingExpiration = ChronoUnit.DAYS.between(LocalDate.now(), expiration.getExpireDate());
-                                RefrigeratorDetailResponse refrigeratorDetail = RefrigeratorDetailResponse.of(ingredient.getIngredientName(), remainingExpiration, ingredient.getIngredientImage());
+                                RefrigeratorDetailResponse refrigeratorDetail = RefrigeratorDetailResponse.of(ingredient.getId(), ingredient.getIngredientName(), remainingExpiration, ingredient.getIngredientImage());
 
                                 return refrigeratorDetail;
                             }).toList();
