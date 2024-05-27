@@ -29,4 +29,8 @@ public class Expiration {
                 .ingredientId(ingredientId)
                 .build();
     }
+
+    public void updateExpirationDate(LocalDate expireDate) {
+        this.expireDate = expireDate;
+    }
 }

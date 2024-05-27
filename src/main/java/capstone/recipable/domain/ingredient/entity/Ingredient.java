@@ -38,4 +38,11 @@ public class Ingredient {
                 .build();
     }
 
+    public void updateIngredientInfo(String ingredientName, String ingredientImage, String memo, Category category) {
+        this.ingredientName = ingredientName;
+        this.ingredientImage = ingredientImage;
+        this.memo = memo;
+        this.categoryId = category;
+    }
+
 }
