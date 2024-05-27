@@ -1,7 +1,5 @@
 package capstone.recipable.domain.refrigerator.dto.response;
 
-import capstone.recipable.domain.refrigerator.dto.response.RefrigeratorDetailResponse;
-
 import java.util.List;
 
 public record RefrigeratorResponse(

@@ -1,5 +1,6 @@
 package capstone.recipable.domain.refrigerator.controller;
 
+import capstone.recipable.domain.ingredient.controller.dto.response.IngredientDetailResponse;
 import capstone.recipable.domain.refrigerator.dto.response.RefrigeratorListResponse;
 import capstone.recipable.domain.refrigerator.service.RefrigeratorService;
 import capstone.recipable.global.response.SuccessResponse;
@@ -8,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,4 +30,16 @@ public class RefrigeratorController {
         RefrigeratorListResponse allIngredientsByRefrigerator = refrigeratorService.getAllIngredientsByRefrigerator();
         return SuccessResponse.of(allIngredientsByRefrigerator);
     }
+
+    @Operation(summary = "냉장고 안 식재료 상세 조회 api", description = """
+                        
+            사용자 냉장고 안에 있는 식재료를 상세 조회합니다.
+                        
+            """)
+    @GetMapping("/{ingredientId}")
+    public ResponseEntity<SuccessResponse<IngredientDetailResponse>> getAllIngredientsByRefrigerator(@PathVariable Long ingredientId) {
+        IngredientDetailResponse ingredientDetail = refrigeratorService.getIngredient(ingredientId);
+        return SuccessResponse.of(ingredientDetail);
+    }
+
 }

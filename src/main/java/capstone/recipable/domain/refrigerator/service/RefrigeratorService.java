@@ -5,6 +5,7 @@ import capstone.recipable.domain.category.entity.Category;
 import capstone.recipable.domain.category.repository.CategoryRepository;
 import capstone.recipable.domain.expiration.entity.Expiration;
 import capstone.recipable.domain.expiration.repository.ExpirationRepository;
+import capstone.recipable.domain.ingredient.controller.dto.response.IngredientDetailResponse;
 import capstone.recipable.domain.ingredient.entity.Ingredient;
 import capstone.recipable.domain.ingredient.repository.IngredientRepository;
 import capstone.recipable.domain.refrigerator.dto.response.RefrigeratorDetailResponse;
@@ -18,12 +19,10 @@ import capstone.recipable.global.error.ApplicationException;
 import capstone.recipable.global.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
@@ -65,5 +64,16 @@ public class RefrigeratorService {
                 }).toList();
 
         return RefrigeratorListResponse.of(refrigeratorResponses);
+    }
+
+    public IngredientDetailResponse getIngredient(Long ingredientId) {
+        Ingredient ingredient = ingredientRepository.findById(ingredientId)
+                .orElseThrow(() -> new ApplicationException(ErrorCode.INGREDIENT_NOT_FOUND));
+
+        Expiration expiration = expirationRepository.findByIngredientId(ingredient)
+                .orElseThrow(() -> new ApplicationException(ErrorCode.EXPIRATION_NOT_FOUND));
+
+        return IngredientDetailResponse.of(ingredient.getIngredientName(), ingredient.getCategoryId().getCategoryName(),
+                expiration.getExpireDate(), ingredient.getMemo());
     }
 }
