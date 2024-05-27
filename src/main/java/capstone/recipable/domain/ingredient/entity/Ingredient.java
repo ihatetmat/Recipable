@@ -18,18 +18,31 @@ public class Ingredient {
 
     private String ingredientName;
 
+    private String ingredientImage;
+
+    private String memo;
+
     @ManyToOne(fetch=FetchType.LAZY)
     private Category categoryId;
 
-    @OneToOne
-    private Expiration expirationId;
+//    @OneToOne
+//    private Expiration expirationId;
 
-    public static Ingredient of(Long id, String ingredientName, Category categoryId, Expiration expirationId) {
+    public static Ingredient of(Long id, String ingredientName, String ingredientImage, String memo, Category categoryId) {
         return Ingredient.builder()
                 .id(id)
                 .ingredientName(ingredientName)
+                .memo(memo)
+                .ingredientImage(ingredientImage)
                 .categoryId(categoryId)
-                .expirationId(expirationId)
                 .build();
     }
+
+    public void updateIngredientInfo(String ingredientName, String ingredientImage, String memo, Category category) {
+        this.ingredientName = ingredientName;
+        this.ingredientImage = ingredientImage;
+        this.memo = memo;
+        this.categoryId = category;
+    }
+
 }

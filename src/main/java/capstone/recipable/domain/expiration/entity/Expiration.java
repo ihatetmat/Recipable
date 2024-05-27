@@ -19,7 +19,7 @@ public class Expiration {
 
     private LocalDate expireDate;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Ingredient ingredientId;
 
     public static Expiration of(Long id, LocalDate expireDate, Ingredient ingredientId) {
@@ -28,5 +28,9 @@ public class Expiration {
                 .expireDate(expireDate)
                 .ingredientId(ingredientId)
                 .build();
+    }
+
+    public void updateExpirationDate(LocalDate expireDate) {
+        this.expireDate = expireDate;
     }
 }
