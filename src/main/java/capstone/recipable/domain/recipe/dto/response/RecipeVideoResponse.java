@@ -1,5 +1,6 @@
-package capstone.recipable.domain.youtube.dto.response;
+package capstone.recipable.domain.recipe.dto.response;
 
+import capstone.recipable.domain.recipe.entity.RecipeVideos;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Getter
 @Builder
-public class YoutubeResponse {
+public class RecipeVideoResponse {
 
     private String videoUrl;
 
@@ -17,9 +18,9 @@ public class YoutubeResponse {
 
     private String thumbnail;
 
-    public static YoutubeResponse of(String videoId, String title, String thumbnail) {
-        return YoutubeResponse.builder()
-                .videoUrl("https://www.youtube.com/watch?v="+videoId)
+    public static RecipeVideoResponse of(String videoUrl, String title, String thumbnail) {
+        return RecipeVideoResponse.builder()
+                .videoUrl(videoUrl)
                 .title(title)
                 .thumbnail(thumbnail)
                 .build();

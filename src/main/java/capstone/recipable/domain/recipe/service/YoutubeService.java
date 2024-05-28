@@ -1,7 +1,8 @@
-package capstone.recipable.domain.youtube.service;
+package capstone.recipable.domain.recipe.service;
 
 import capstone.recipable.domain.auth.jwt.SecurityContextProvider;
-import capstone.recipable.domain.youtube.dto.response.YoutubeResponse;
+import capstone.recipable.domain.recipe.entity.RecipeVideos;
+import capstone.recipable.domain.recipe.repository.RecipeVideosRepository;
 import capstone.recipable.global.error.ApplicationException;
 import capstone.recipable.global.error.ErrorCode;
 import com.google.api.client.json.JsonFactory;
@@ -25,7 +26,9 @@ public class YoutubeService {
     @Value("${youtube.api.key}")
     private String apiKey;
 
-    public List<YoutubeResponse> searchVideo(String query) throws IOException {
+    private final RecipeVideosRepository recipeVideosRepository;
+
+    public List<RecipeVideos> searchVideo(String query) throws IOException {
         Long userId = SecurityContextProvider.getAuthenticatedUserId();
         // JSON 데이터를 처리하기 위한 JsonFactory 객체 생성
         JsonFactory jsonFactory = new JacksonFactory();
@@ -46,7 +49,7 @@ public class YoutubeService {
         List<SearchResult> searchResultList = searchResponse.getItems();
 
         if (searchResultList != null && !searchResultList.isEmpty()) {
-            List<YoutubeResponse> responses = new ArrayList<>();
+            List<RecipeVideos> responses = new ArrayList<>();
             for (int i = 0; i < 3; i++) {
                 SearchResult searchResult = searchResultList.get(i);
 
@@ -54,7 +57,8 @@ public class YoutubeService {
                 String videoTitle = searchResult.getSnippet().getTitle();
                 String thumbnail = searchResult.getSnippet().getThumbnails().getDefault().getUrl();
 
-                YoutubeResponse response = YoutubeResponse.of(videoId, videoTitle, thumbnail);
+                RecipeVideos response = RecipeVideos.of(videoId, videoTitle, thumbnail);
+                recipeVideosRepository.save(response);
                 responses.add(response);
             }
             return responses;
