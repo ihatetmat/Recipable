@@ -16,15 +16,20 @@ import capstone.recipable.domain.refrigerator.entity.Refrigerator;
 import capstone.recipable.domain.refrigerator.repository.RefrigeratorRepository;
 import capstone.recipable.domain.user.entity.User;
 import capstone.recipable.domain.user.repository.UserRepository;
+import capstone.recipable.global.entity.Uuid;
 import capstone.recipable.global.error.ApplicationException;
 import capstone.recipable.global.error.ErrorCode;
+import capstone.recipable.global.s3.AmazonS3Manager;
+import capstone.recipable.global.s3.UuidRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Service
@@ -35,6 +40,8 @@ public class RefrigeratorService {
     private final CategoryRepository categoryRepository;
     private final IngredientRepository ingredientRepository;
     private final ExpirationRepository expirationRepository;
+    private final UuidRepository uuidRepository;
+    private final AmazonS3Manager amazonS3Manager;
 
 
     public RefrigeratorListResponse getAllIngredientsByRefrigerator() {
@@ -47,8 +54,8 @@ public class RefrigeratorService {
         if (refrigerator == null) {
             return null;
         }
-        List<Category> allCategoryByRefrigerator = categoryRepository.findAllByRefrigerator(refrigerator);
 
+        List<Category> allCategoryByRefrigerator = categoryRepository.findAllByRefrigerator(refrigerator);
         List<RefrigeratorResponse> refrigeratorResponses = allCategoryByRefrigerator.stream()
                 .map(category -> {
                     List<Ingredient> ingredients = ingredientRepository.findAllByCategoryId(category);
@@ -94,19 +101,35 @@ public class RefrigeratorService {
     }
 
     @Transactional
-    public IngredientDetailResponse updateIngredient(Long ingredientId, UpdateIngredientRequest updateIngredientRequest) {
+    public IngredientDetailResponse updateIngredient(Long ingredientId, UpdateIngredientRequest updateIngredientRequest, MultipartFile multipartFile) {
         Ingredient ingredient = ingredientRepository.findById(ingredientId)
                 .orElseThrow(() -> new ApplicationException(ErrorCode.INGREDIENT_NOT_FOUND));
 
         Expiration expiration = expirationRepository.findByIngredient(ingredient)
-                .orElseThrow(() -> new ApplicationException(ErrorCode.EXPIRATION_NOT_FOUND));
+                .orElseGet(() -> {
+                    if (updateIngredientRequest.expirationDay() != null) {
+                        Expiration newExpiration = Expiration.of(null, updateIngredientRequest.expirationDay(), ingredient);
+                        return expirationRepository.save(newExpiration);
+                    }
+                    return null;
+                });
+
+        if (expiration != null && updateIngredientRequest.expirationDay() != null) {
+            expiration.updateExpirationDate(updateIngredientRequest.expirationDay());
+        }
 
         String requestedCategoryName = updateIngredientRequest.categoryName();
         Category category = categoryRepository.findByCategoryName(requestedCategoryName)
                 .orElseThrow(() -> new ApplicationException(ErrorCode.CATEGORY_NOT_FOUND));
 
-        ingredient.updateIngredientInfo(updateIngredientRequest.ingredientName(), updateIngredientRequest.ingredientImage(), updateIngredientRequest.memo(), category);
-        expiration.updateExpirationDate(updateIngredientRequest.expirationDay());
+        String uploadedFile = ingredient.getIngredientImage();
+        if (multipartFile != null) {
+            String uuid = UUID.randomUUID().toString();
+            Uuid savedUuid = uuidRepository.save(Uuid.builder().uuid(uuid).build());
+            uploadedFile = amazonS3Manager.uploadFile(amazonS3Manager.generateIngredientKeyName(savedUuid), multipartFile);
+        }
+
+        ingredient.updateIngredientInfo(updateIngredientRequest.ingredientName(), uploadedFile, updateIngredientRequest.memo(), category);
 
         return IngredientDetailResponse.of(ingredient.getIngredientName(), ingredient.getCategory().getCategoryName(),
                 expiration.getExpireDate(), ingredient.getMemo());

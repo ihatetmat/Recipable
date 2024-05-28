@@ -10,8 +10,10 @@ import capstone.recipable.global.response.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequiredArgsConstructor
@@ -48,11 +50,12 @@ public class RefrigeratorController {
             사용자 냉장고 안에 있는 식재료를 수정 합니다.
                         
             """)
-    @PatchMapping("/{ingredientId}")
+    @PatchMapping(value = "/{ingredientId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<SuccessResponse<IngredientDetailResponse>> updateIngredient(@PathVariable Long ingredientId,
-                                                                                      @RequestBody UpdateIngredientRequest updateIngredientRequest) {
+                                                                                      @RequestPart UpdateIngredientRequest updateIngredientRequest,
+                                                                                      @RequestPart(value = "multipartFile", required = false) MultipartFile multipartFile) {
 
-        IngredientDetailResponse ingredientDetail = refrigeratorService.updateIngredient(ingredientId, updateIngredientRequest);
+        IngredientDetailResponse ingredientDetail = refrigeratorService.updateIngredient(ingredientId, updateIngredientRequest, multipartFile);
         return SuccessResponse.of(ingredientDetail);
     }
 
@@ -62,7 +65,7 @@ public class RefrigeratorController {
                         
             """)
     @DeleteMapping("/{ingredientId}")
-    public ResponseEntity<SuccessResponse<String>> updateIngredient(@PathVariable Long ingredientId) {
+    public ResponseEntity<SuccessResponse<String>> deleteIngredient(@PathVariable Long ingredientId) {
 
         refrigeratorService.deleteIngredient(ingredientId);
         return SuccessResponse.of("식재료가 성공적으로 삭제 되었습니다.");
