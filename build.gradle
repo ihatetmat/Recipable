@@ -56,6 +56,8 @@ dependencies {
 	implementation 'net.minidev:json-smart:2.4.7'
 	implementation 'org.json:json:20210307'
 
+	//s3
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
