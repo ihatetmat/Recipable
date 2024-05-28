@@ -41,13 +41,13 @@ public class RefrigeratorService {
         User user = userRepository.findById(SecurityContextProvider.getAuthenticatedUserId())
                 .orElseThrow(() -> new ApplicationException(ErrorCode.USER_NOT_FOUND));
 
-        Refrigerator refrigerator = refrigeratorRepository.findByUserId(user).orElse(null);
+        Refrigerator refrigerator = refrigeratorRepository.findByUser(user).orElse(null);
 //                .orElseThrow(() -> new ApplicationException(ErrorCode.REFRIGERATOR_NOT_FOUND));
 
         if (refrigerator == null) {
             return null;
         }
-        List<Category> allCategoryByRefrigerator = categoryRepository.findAllByRefrigeratorId(refrigerator);
+        List<Category> allCategoryByRefrigerator = categoryRepository.findAllByRefrigerator(refrigerator);
 
         List<RefrigeratorResponse> refrigeratorResponses = allCategoryByRefrigerator.stream()
                 .map(category -> {
@@ -72,7 +72,7 @@ public class RefrigeratorService {
         User user = userRepository.findById(SecurityContextProvider.getAuthenticatedUserId())
                 .orElseThrow(() -> new ApplicationException(ErrorCode.USER_NOT_FOUND));
 
-        Refrigerator refrigerator = refrigeratorRepository.findByUserId(user).orElse(null);
+        Refrigerator refrigerator = refrigeratorRepository.findByUser(user).orElse(null);
 //                .orElseThrow(() -> new ApplicationException(ErrorCode.REFRIGERATOR_NOT_FOUND));
 
         if (refrigerator == null) {
@@ -82,7 +82,7 @@ public class RefrigeratorService {
         Ingredient ingredient = ingredientRepository.findById(ingredientId)
                 .orElseThrow(() -> new ApplicationException(ErrorCode.INGREDIENT_NOT_FOUND));
 
-        if (!ingredient.getCategoryId().getRefrigeratorId().equals(refrigerator)) {
+        if (!ingredient.getCategory().getRefrigerator().equals(refrigerator)) {
             throw new ApplicationException(ErrorCode.WRONG_USER);
         }
 

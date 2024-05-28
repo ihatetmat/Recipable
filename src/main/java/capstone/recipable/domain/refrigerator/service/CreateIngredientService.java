@@ -16,9 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-
 @RequiredArgsConstructor
 @Service
 public class CreateIngredientService {
@@ -33,18 +30,19 @@ public class CreateIngredientService {
         User user = userRepository.findById(SecurityContextProvider.getAuthenticatedUserId())
                 .orElseThrow(() -> new ApplicationException(ErrorCode.USER_NOT_FOUND));
 
-        Refrigerator refrigerator = refrigeratorRepository.findByUserId(user)
+        Refrigerator refrigerator = refrigeratorRepository.findByUser(user)
                 .orElseGet(() -> refrigeratorRepository.save(Refrigerator.of(null, user)));
 
         createIngredientListRequest.ingredients()
                 .forEach(ingredientRequest -> {
-                    Category category = categoryRepository.findByCategoryNameAndRefrigeratorId(ingredientRequest.categoryName(), refrigerator)
+                    Category category = categoryRepository.findByCategoryNameAndRefrigerator(ingredientRequest.categoryName(), refrigerator)
                             .orElseGet(() ->
                                     categoryRepository.save(Category.of(null, ingredientRequest.categoryName(), null, refrigerator))
                             );
                     ingredientRepository.save(
-                            Ingredient.of(null, ingredientRequest.ingredientName(), null, null, category)
+                            Ingredient.of(null, ingredientRequest.ingredientName(), null, null,category, null)
                     );
+
                 });
     }
 
