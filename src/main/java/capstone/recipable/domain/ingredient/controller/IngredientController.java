@@ -2,6 +2,7 @@ package capstone.recipable.domain.ingredient.controller;
 
 import capstone.recipable.domain.ingredient.controller.dto.response.IngredientListResponse;
 import capstone.recipable.domain.ingredient.service.NaverOcrService;
+import capstone.recipable.domain.ingredient.service.NaverSearchImageService;
 import capstone.recipable.domain.ingredient.service.PredictService;
 import capstone.recipable.global.response.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -9,9 +10,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -21,6 +20,7 @@ import java.util.List;
 @Tag(name = "ingredient", description = "영수증 분석 및 재료 관련 api")
 public class IngredientController {
     private final NaverOcrService naverOcrService;
+    private final NaverSearchImageService naverSearchImageService;
     private final PredictService predictService;
 
     @Operation(summary = "영수증 업로드 후 재료 카테고리 및 재료 이름 반환 api", description = """
@@ -36,6 +36,12 @@ public class IngredientController {
         List<String> ingredientList = naverOcrService.callApi(multipartFile);
         IngredientListResponse ingredientListResponse = predictService.returnPrediction(ingredientList);
         return SuccessResponse.of(ingredientListResponse);
+    }
+
+    @GetMapping("/test")
+    public ResponseEntity<SuccessResponse<String>> getImageByNaverSearch(@RequestParam String query) {
+        String imageFromNaverSearchApi = naverSearchImageService.getImageFromNaverSearchApi(query);
+        return SuccessResponse.of(imageFromNaverSearchApi);
     }
 
 }
