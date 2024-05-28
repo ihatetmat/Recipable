@@ -1,13 +1,10 @@
 package capstone.recipable.domain.recipe.dto.response;
 
 import capstone.recipable.domain.recipe.entity.RecipeVideos;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@NoArgsConstructor
-@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
 @Builder
 public class RecipeVideoResponse {
