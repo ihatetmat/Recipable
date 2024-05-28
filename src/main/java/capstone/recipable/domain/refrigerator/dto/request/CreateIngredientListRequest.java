@@ -1,4 +1,4 @@
-package capstone.recipable.domain.refrigerator.dto;
+package capstone.recipable.domain.refrigerator.dto.request;
 
 import capstone.recipable.domain.category.entity.Category;
 import capstone.recipable.domain.ingredient.entity.Ingredient;

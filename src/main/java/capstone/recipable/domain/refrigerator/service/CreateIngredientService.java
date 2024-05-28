@@ -5,7 +5,7 @@ import capstone.recipable.domain.category.entity.Category;
 import capstone.recipable.domain.category.repository.CategoryRepository;
 import capstone.recipable.domain.ingredient.entity.Ingredient;
 import capstone.recipable.domain.ingredient.repository.IngredientRepository;
-import capstone.recipable.domain.refrigerator.dto.CreateIngredientListRequest;
+import capstone.recipable.domain.refrigerator.dto.request.CreateIngredientListRequest;
 import capstone.recipable.domain.refrigerator.entity.Refrigerator;
 import capstone.recipable.domain.refrigerator.repository.RefrigeratorRepository;
 import capstone.recipable.domain.user.entity.User;

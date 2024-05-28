@@ -32,6 +32,7 @@ public class Recipe {
     private List<RecipeVideos> recipeVideos;
 
     @OneToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     public static Recipe of(String recipeImg, String recipeName, String introduce,

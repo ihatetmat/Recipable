@@ -2,7 +2,7 @@ package capstone.recipable.domain.refrigerator.controller;
 
 import capstone.recipable.domain.ingredient.controller.dto.request.UpdateIngredientRequest;
 import capstone.recipable.domain.ingredient.controller.dto.response.IngredientDetailResponse;
-import capstone.recipable.domain.refrigerator.dto.CreateIngredientListRequest;
+import capstone.recipable.domain.refrigerator.dto.request.CreateIngredientListRequest;
 import capstone.recipable.domain.refrigerator.dto.response.RefrigeratorListResponse;
 import capstone.recipable.domain.refrigerator.service.CreateIngredientService;
 import capstone.recipable.domain.refrigerator.service.RefrigeratorService;
