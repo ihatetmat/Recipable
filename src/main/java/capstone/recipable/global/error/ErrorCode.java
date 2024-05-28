@@ -38,7 +38,33 @@ public enum ErrorCode {
      *  500 INTERNAL SERVER ERROR
      */
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류입니다."),
-    FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "S3 이미지 업로드에 실패");
+    FILE_UPLOAD_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "S3 이미지 업로드에 실패"),
+
+    /**
+     * User 관련 에러
+     */
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND,"사용자를 찾을 수 없습니다."),
+
+    /**
+     * Refrigerator 관련 ERROR
+     */
+    REFRIGERATOR_NOT_FOUND(HttpStatus.NOT_FOUND,"냉장고를 찾을 수 없습니다."),
+
+    /**
+     * Ingredient 관련 ERROR
+     */
+    INGREDIENT_NOT_FOUND(HttpStatus.NOT_FOUND,"식재료를 찾을 수 없습니다."),
+
+    /**
+     * EXPIRATION 관련 ERROR
+     */
+    EXPIRATION_NOT_FOUND(HttpStatus.NOT_FOUND,"해당 식재료의 유효기간을 찾을 수 없습니다."),
+
+    /**
+     * CATEGORY 관련 ERROR
+     */
+    CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND,"카태고리를 찾을 수 없습니다.");
+
 
     private final HttpStatus status;
     private final String message;

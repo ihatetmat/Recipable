@@ -30,4 +30,8 @@ public class Expiration {
                 .ingredient(ingredient)
                 .build();
     }
+
+    public void updateExpirationDate(LocalDate expireDate) {
+        this.expireDate = expireDate;
+    }
 }
