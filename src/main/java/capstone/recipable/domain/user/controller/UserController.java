@@ -18,6 +18,9 @@ public class UserController {
 
     private final UserService userService;
 
+    /*@GetMapping("/main")
+    public ResponseEntity<SuccessResponse<>>*/
+
     @Operation(summary = "사용자 정보 조회")
     @GetMapping("/info")
     public ResponseEntity<SuccessResponse<UserInfoResponse>> getUserInfo() {
