@@ -49,6 +49,10 @@ public class RecipeController {
         return SuccessResponse.of(response);
     }
 
+    @Operation(summary = "레시피 상세 조회 api", description = """
+            레시피 상세 조회 api입니다.
+            
+            """)
     @GetMapping("/{recipeId}")
     public ResponseEntity<SuccessResponse<RecipeDetailsResponse>> getRecipeDetails(@PathVariable long recipeId) {
         RecipeDetailsResponse response = recipeService.getRecipeDetails(recipeId);

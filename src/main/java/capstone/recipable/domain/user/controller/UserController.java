@@ -1,6 +1,7 @@
 package capstone.recipable.domain.user.controller;
 
 import capstone.recipable.domain.user.dto.request.UpdateUserInfo;
+import capstone.recipable.domain.user.dto.response.MainPageResponse;
 import capstone.recipable.domain.user.dto.response.UserInfoResponse;
 import capstone.recipable.domain.user.service.UserService;
 import capstone.recipable.global.response.SuccessResponse;
@@ -18,12 +19,23 @@ public class UserController {
 
     private final UserService userService;
 
-    /*@GetMapping("/main")
-    public ResponseEntity<SuccessResponse<>>*/
+    @Operation(summary = "메인 페이지 조회", description = """
+            메인 페이지 조회 api입니다.
+            
+            """)
+    @GetMapping("/main")
+    public ResponseEntity<SuccessResponse<MainPageResponse>> getMainPage() {
+        MainPageResponse response = userService.getMainPage();
+        return SuccessResponse.of(response);
+    }
 
-    @Operation(summary = "사용자 정보 조회")
+    @Operation(summary = "사용자 정보 조회", description = """
+            사용자 정보 조회 api입니다.
+        
+            """)
     @GetMapping("/info")
     public ResponseEntity<SuccessResponse<UserInfoResponse>> getUserInfo() {
+
         UserInfoResponse response = userService.getUserInfo();
         return SuccessResponse.of(response);
     }

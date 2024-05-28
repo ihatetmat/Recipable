@@ -29,7 +29,6 @@ public class YoutubeService {
     private final RecipeVideosRepository recipeVideosRepository;
 
     public List<RecipeVideos> searchVideo(String query) throws IOException {
-        Long userId = SecurityContextProvider.getAuthenticatedUserId();
         // JSON 데이터를 처리하기 위한 JsonFactory 객체 생성
         JsonFactory jsonFactory = new JacksonFactory();
 

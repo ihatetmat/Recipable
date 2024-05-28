@@ -1,5 +1,6 @@
 package capstone.recipable.domain.recipe.entity;
 
+import capstone.recipable.domain.user.entity.User;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -29,6 +30,9 @@ public class Recipe {
 
     @OneToMany
     private List<RecipeVideos> recipeVideos;
+
+    @OneToOne
+    private User user;
 
     public static Recipe of(String recipeImg, String recipeName, String introduce,
                              List<String> ingredients, String recipeDetails,
