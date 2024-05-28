@@ -49,6 +49,7 @@ public enum ErrorCode {
      * Refrigerator 관련 ERROR
      */
     REFRIGERATOR_NOT_FOUND(HttpStatus.NOT_FOUND,"냉장고를 찾을 수 없습니다."),
+    WRONG_USER(HttpStatus.BAD_REQUEST,"사용자는 해당 식재료 혹은 냉장고를 가지고 있지 않습니다."),
 
     /**
      * Ingredient 관련 ERROR

@@ -20,14 +20,14 @@ public class Category {
     private String details;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    private Refrigerator refrigeratorId;
+    private Refrigerator refrigerator;
 
     public static Category of(Long id, String categoryName, String details, Refrigerator refrigerator) {
         return Category.builder()
                 .id(id)
                 .categoryName(categoryName)
                 .details(details)
-                .refrigeratorId(refrigerator)
+                .refrigerator(refrigerator)
                 .build();
     }
 }

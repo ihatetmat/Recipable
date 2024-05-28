@@ -2,7 +2,9 @@ package capstone.recipable.domain.refrigerator.controller;
 
 import capstone.recipable.domain.ingredient.controller.dto.request.UpdateIngredientRequest;
 import capstone.recipable.domain.ingredient.controller.dto.response.IngredientDetailResponse;
+import capstone.recipable.domain.refrigerator.dto.CreateIngredientListRequest;
 import capstone.recipable.domain.refrigerator.dto.response.RefrigeratorListResponse;
+import capstone.recipable.domain.refrigerator.service.CreateIngredientService;
 import capstone.recipable.domain.refrigerator.service.RefrigeratorService;
 import capstone.recipable.global.response.SuccessResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "refrigerator", description = "냉장고 관련 api")
 public class RefrigeratorController {
     private final RefrigeratorService refrigeratorService;
+    private final CreateIngredientService createIngredientService;
 
     @Operation(summary = "냉장고 안 식재료 전체 조회 api", description = """
             
@@ -65,4 +68,25 @@ public class RefrigeratorController {
         return SuccessResponse.of("식재료가 성공적으로 삭제 되었습니다.");
     }
 
+    @Operation(summary = "냉장고에 재료 추가 api(영수증 반환 결과를 토대로)", description = """
+                        
+            영수증분석을 통해 나온 재료들을 통해서 냉장고에 재료를 추가합니다.
+                        
+            """)
+    @PostMapping("/receipt")
+    public ResponseEntity<SuccessResponse<String>> createIngredientByOcr(@RequestBody CreateIngredientListRequest createIngredientListRequest) {
+        createIngredientService.createIngredient(createIngredientListRequest);
+        return SuccessResponse.of("식재료가 성공적으로 냉장고에 추가되었습니다.");
+    }
+
+    @Operation(summary = "냉장고에 들어갈 식재료 직접 추가 api", description = """
+                        
+            사용자가 직접 입력을 통하여 냉장고에 식재료를 입력하여 추가합니다.
+                        
+            """)
+    @PostMapping()
+    public ResponseEntity<SuccessResponse<String>> createIngredientByDirect(@RequestBody CreateIngredientListRequest createIngredientListRequest) {
+        createIngredientService.createIngredient(createIngredientListRequest);
+        return SuccessResponse.of("식재료가 성공적으로 냉장고에 추가되었습니다.");
+    }
 }

@@ -26,7 +26,7 @@ public class Ingredient {
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @OneToOne(mappedBy = "ingredient")
+    @OneToOne(mappedBy = "ingredient", cascade = CascadeType.ALL)
     private Expiration expiration;
 
     public static Ingredient of(Long id, String ingredientName, String ingredientImage, String memo, Category category, Expiration expiration) {
