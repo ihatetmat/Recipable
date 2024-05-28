@@ -58,7 +58,7 @@ public class RefrigeratorService {
         List<Category> allCategoryByRefrigerator = categoryRepository.findAllByRefrigerator(refrigerator);
         List<RefrigeratorResponse> refrigeratorResponses = allCategoryByRefrigerator.stream()
                 .map(category -> {
-                    List<Ingredient> ingredients = ingredientRepository.findAllByCategoryId(category);
+                    List<Ingredient> ingredients = ingredientRepository.findAllByCategory(category);
 
                     List<RefrigeratorDetailResponse> refrigeratorDetails = ingredients.stream()
                             .map(ingredient -> {
@@ -96,7 +96,7 @@ public class RefrigeratorService {
         Expiration expiration = expirationRepository.findByIngredient(ingredient)
                 .orElseThrow(() -> new ApplicationException(ErrorCode.EXPIRATION_NOT_FOUND));
 
-        return IngredientDetailResponse.of(ingredient.getIngredientName(), ingredient.getCategory().getCategoryName(),
+        return IngredientDetailResponse.of(ingredient.getIngredientName(),ingredient.getIngredientImage(), ingredient.getCategory().getCategoryName(),
                 expiration.getExpireDate(), ingredient.getMemo());
     }
 
@@ -126,12 +126,11 @@ public class RefrigeratorService {
         if (multipartFile != null) {
             String uuid = UUID.randomUUID().toString();
             Uuid savedUuid = uuidRepository.save(Uuid.builder().uuid(uuid).build());
-            uploadedFile = amazonS3Manager.uploadFile(amazonS3Manager.generateIngredientKeyName(savedUuid), multipartFile);
+            uploadedFile = amazonS3Manager.uploadFile(amazonS3Manager.generateIngredientKeyName(savedUuid),multipartFile);
         }
-
         ingredient.updateIngredientInfo(updateIngredientRequest.ingredientName(), uploadedFile, updateIngredientRequest.memo(), category);
 
-        return IngredientDetailResponse.of(ingredient.getIngredientName(), ingredient.getCategory().getCategoryName(),
+        return IngredientDetailResponse.of(ingredient.getIngredientName(), ingredient.getIngredientImage(), ingredient.getCategory().getCategoryName(),
                 expiration.getExpireDate(), ingredient.getMemo());
     }
 

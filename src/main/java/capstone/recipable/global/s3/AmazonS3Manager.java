@@ -23,18 +23,20 @@ public class AmazonS3Manager{
     private final AmazonConfig amazonConfig;
 
     private final UuidRepository uuidRepository;
-    public String uploadFile(String keyName, MultipartFile file) {
+    public String uploadFile(String keyName, MultipartFile file){
         ObjectMetadata metadata = new ObjectMetadata();
+        metadata.setContentType(file.getContentType());
+        metadata.setContentDisposition("inline");
         metadata.setContentLength(file.getSize());
         try {
             amazonS3.putObject(new PutObjectRequest(amazonConfig.getBucket(), keyName, file.getInputStream(), metadata));
-        }catch (IOException e) {
+        } catch (IOException e) {
             throw new ApplicationException(ErrorCode.IMAGE_IS_NOT_UPLOADED);
         }
         return amazonS3.getUrl(amazonConfig.getBucket(), keyName).toString();
     }
 
     public String generateIngredientKeyName(Uuid uuid) {
-        return amazonConfig.getIngredientPath() + '/' + uuid.getUuid();
+        return uuid.getUuid();
     }
 }

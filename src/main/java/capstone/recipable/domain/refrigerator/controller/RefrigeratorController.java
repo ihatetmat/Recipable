@@ -50,7 +50,7 @@ public class RefrigeratorController {
             사용자 냉장고 안에 있는 식재료를 수정 합니다.
                         
             """)
-    @PatchMapping(value = "/{ingredientId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "/{ingredientId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<SuccessResponse<IngredientDetailResponse>> updateIngredient(@PathVariable Long ingredientId,
                                                                                       @RequestPart UpdateIngredientRequest updateIngredientRequest,
                                                                                       @RequestPart(value = "multipartFile", required = false) MultipartFile multipartFile) {
