@@ -22,7 +22,6 @@ public class AmazonS3Manager{
 
     private final AmazonConfig amazonConfig;
 
-    private final UuidRepository uuidRepository;
     public String uploadFile(String keyName, MultipartFile file){
         ObjectMetadata metadata = new ObjectMetadata();
         metadata.setContentType(file.getContentType());
@@ -37,6 +36,6 @@ public class AmazonS3Manager{
     }
 
     public String generateIngredientKeyName(Uuid uuid) {
-        return uuid.getUuid();
+        return amazonConfig.getIngredientPath() + "/" + uuid.getUuid();
     }
 }
