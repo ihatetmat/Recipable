@@ -6,7 +6,6 @@ import capstone.recipable.domain.ingredient.entity.Ingredient;
 import java.time.LocalDate;
 
 public record UpdateIngredientRequest(
-        String ingredientImage,
         String ingredientName,
         String categoryName,
         LocalDate expirationDay,
