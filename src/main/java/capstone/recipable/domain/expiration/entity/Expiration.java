@@ -20,13 +20,14 @@ public class Expiration {
     private LocalDate expireDate;
 
     @OneToOne
-    private Ingredient ingredientId;
+    @JoinColumn(name = "ingredient_id")
+    private Ingredient ingredient;
 
-    public static Expiration of(Long id, LocalDate expireDate, Ingredient ingredientId) {
+    public static Expiration of(Long id, LocalDate expireDate, Ingredient ingredient) {
         return Expiration.builder()
                 .id(id)
                 .expireDate(expireDate)
-                .ingredientId(ingredientId)
+                .ingredient(ingredient)
                 .build();
     }
 }

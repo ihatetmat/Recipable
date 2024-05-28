@@ -19,17 +19,18 @@ public class Ingredient {
     private String ingredientName;
 
     @ManyToOne(fetch=FetchType.LAZY)
-    private Category categoryId;
+    @JoinColumn(name = "category_id")
+    private Category category;
 
-    @OneToOne
-    private Expiration expirationId;
+    @OneToOne(mappedBy = "ingredient")
+    private Expiration expiration;
 
-    public static Ingredient of(Long id, String ingredientName, Category categoryId, Expiration expirationId) {
+    public static Ingredient of(Long id, String ingredientName, Category category, Expiration expiration) {
         return Ingredient.builder()
                 .id(id)
                 .ingredientName(ingredientName)
-                .categoryId(categoryId)
-                .expirationId(expirationId)
+                .category(category)
+                .expiration(expiration)
                 .build();
     }
 }
