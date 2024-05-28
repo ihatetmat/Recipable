@@ -27,20 +27,19 @@ public class Recipe {
 
     private String recipeDetails;
 
-    @ElementCollection
-    private List<String> videoUrls;
+    @OneToMany
+    private List<RecipeVideos> recipeVideos;
 
-    public static Recipe of(Long id, String recipeImg, String recipeName, String introduce,
+    public static Recipe of(String recipeImg, String recipeName, String introduce,
                              List<String> ingredients, String recipeDetails,
-                             List<String> videoUrls) {
+                             List<RecipeVideos> recipeVideos) {
         return Recipe.builder()
-                .id(id)
                 .recipeImg(recipeImg)
                 .recipeName(recipeName)
                 .introduce(introduce)
                 .ingredients(ingredients)
                 .recipeDetails(recipeDetails)
-                .videoUrls(videoUrls)
+                .recipeVideos(recipeVideos)
                 .build();
     }
 }

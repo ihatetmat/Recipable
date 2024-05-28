@@ -89,7 +89,7 @@ public class RefrigeratorService {
         Expiration expiration = expirationRepository.findByIngredient(ingredient)
                 .orElseThrow(() -> new ApplicationException(ErrorCode.EXPIRATION_NOT_FOUND));
 
-        return IngredientDetailResponse.of(ingredient.getIngredientName(), ingredient.getCategoryId().getCategoryName(),
+        return IngredientDetailResponse.of(ingredient.getIngredientName(), ingredient.getCategory().getCategoryName(),
                 expiration.getExpireDate(), ingredient.getMemo());
     }
 
@@ -108,7 +108,7 @@ public class RefrigeratorService {
         ingredient.updateIngredientInfo(updateIngredientRequest.ingredientName(), updateIngredientRequest.ingredientImage(), updateIngredientRequest.memo(), category);
         expiration.updateExpirationDate(updateIngredientRequest.expirationDay());
 
-        return IngredientDetailResponse.of(ingredient.getIngredientName(), ingredient.getCategoryId().getCategoryName(),
+        return IngredientDetailResponse.of(ingredient.getIngredientName(), ingredient.getCategory().getCategoryName(),
                 expiration.getExpireDate(), ingredient.getMemo());
     }
 
