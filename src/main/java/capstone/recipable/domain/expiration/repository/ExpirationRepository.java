@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface ExpirationRepository extends JpaRepository<Expiration, Long> {
-    Optional<Expiration> findByIngredientId(Ingredient ingredient);
+    Optional<Expiration> findByIngredient(Ingredient ingredient);
 }

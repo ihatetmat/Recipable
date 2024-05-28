@@ -19,7 +19,6 @@ import capstone.recipable.domain.user.repository.UserRepository;
 import capstone.recipable.global.error.ApplicationException;
 import capstone.recipable.global.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -56,7 +55,7 @@ public class RefrigeratorService {
 
                     List<RefrigeratorDetailResponse> refrigeratorDetails = ingredients.stream()
                             .map(ingredient -> {
-                                Expiration expiration = expirationRepository.findByIngredientId(ingredient).orElse(null);
+                                Expiration expiration = expirationRepository.findByIngredient(ingredient).orElse(null);
 
                                 Long remainingExpiration = expiration != null ? ChronoUnit.DAYS.between(LocalDate.now(), expiration.getExpireDate()) : null;
                                 RefrigeratorDetailResponse refrigeratorDetail = RefrigeratorDetailResponse.of(ingredient.getId(), ingredient.getIngredientName(), remainingExpiration, ingredient.getIngredientImage());
@@ -87,7 +86,7 @@ public class RefrigeratorService {
             throw new ApplicationException(ErrorCode.WRONG_USER);
         }
 
-        Expiration expiration = expirationRepository.findByIngredientId(ingredient)
+        Expiration expiration = expirationRepository.findByIngredient(ingredient)
                 .orElseThrow(() -> new ApplicationException(ErrorCode.EXPIRATION_NOT_FOUND));
 
         return IngredientDetailResponse.of(ingredient.getIngredientName(), ingredient.getCategoryId().getCategoryName(),
@@ -99,7 +98,7 @@ public class RefrigeratorService {
         Ingredient ingredient = ingredientRepository.findById(ingredientId)
                 .orElseThrow(() -> new ApplicationException(ErrorCode.INGREDIENT_NOT_FOUND));
 
-        Expiration expiration = expirationRepository.findByIngredientId(ingredient)
+        Expiration expiration = expirationRepository.findByIngredient(ingredient)
                 .orElseThrow(() -> new ApplicationException(ErrorCode.EXPIRATION_NOT_FOUND));
 
         String requestedCategoryName = updateIngredientRequest.categoryName();
@@ -117,8 +116,7 @@ public class RefrigeratorService {
     public void deleteIngredient(Long ingredientId) {
         Ingredient ingredient = ingredientRepository.findById(ingredientId)
                 .orElseThrow(() -> new ApplicationException(ErrorCode.INGREDIENT_NOT_FOUND));
-        expirationRepository.delete(
-                expirationRepository.findByIngredientId(ingredient).orElseThrow(() -> new ApplicationException(ErrorCode.EXPIRATION_NOT_FOUND))
-        );
+
+        ingredientRepository.delete(ingredient);
     }
 }
