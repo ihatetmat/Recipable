@@ -93,8 +93,8 @@ public class RefrigeratorService {
             throw new ApplicationException(ErrorCode.WRONG_USER);
         }
 
-        Expiration expiration = expirationRepository.findByIngredient(ingredient)
-                .orElseThrow(() -> new ApplicationException(ErrorCode.EXPIRATION_NOT_FOUND));
+        Expiration expiration = expirationRepository.findByIngredient(ingredient).orElse(null);
+//                .orElseThrow(() -> new ApplicationException(ErrorCode.EXPIRATION_NOT_FOUND));
 
         return IngredientDetailResponse.of(ingredient.getIngredientName(),ingredient.getIngredientImage(), ingredient.getCategory().getCategoryName(),
                 expiration.getExpireDate(), ingredient.getMemo());

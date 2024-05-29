@@ -37,9 +37,9 @@ public class CreateIngredientService {
 
         createIngredientListRequest.ingredients()
                 .forEach(ingredientRequest -> {
-                    Category category = categoryRepository.findByCategoryNameAndRefrigerator(ingredientRequest.categoryName(), refrigerator)
+                    Category category = categoryRepository.findByCategoryNameAndRefrigerator(ingredientRequest.ingredientCategory(), refrigerator)
                             .orElseGet(() ->
-                                    categoryRepository.save(Category.of(null, ingredientRequest.categoryName(), null, refrigerator))
+                                    categoryRepository.save(Category.of(null, ingredientRequest.ingredientCategory(), null, refrigerator))
                             );
                     String imageFromNaverSearchApi = naverSearchImageService.getImageFromNaverSearchApi(ingredientRequest.ingredientName());
                     ingredientRepository.save(
