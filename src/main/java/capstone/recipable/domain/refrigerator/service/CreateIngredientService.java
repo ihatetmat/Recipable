@@ -5,6 +5,7 @@ import capstone.recipable.domain.category.entity.Category;
 import capstone.recipable.domain.category.repository.CategoryRepository;
 import capstone.recipable.domain.ingredient.entity.Ingredient;
 import capstone.recipable.domain.ingredient.repository.IngredientRepository;
+import capstone.recipable.domain.ingredient.service.NaverSearchImageService;
 import capstone.recipable.domain.refrigerator.dto.request.CreateIngredientListRequest;
 import capstone.recipable.domain.refrigerator.entity.Refrigerator;
 import capstone.recipable.domain.refrigerator.repository.RefrigeratorRepository;
@@ -23,6 +24,7 @@ public class CreateIngredientService {
     private final RefrigeratorRepository refrigeratorRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
+    private final NaverSearchImageService naverSearchImageService;
 
 
     @Transactional
@@ -39,8 +41,9 @@ public class CreateIngredientService {
                             .orElseGet(() ->
                                     categoryRepository.save(Category.of(null, ingredientRequest.categoryName(), null, refrigerator))
                             );
+                    String imageFromNaverSearchApi = naverSearchImageService.getImageFromNaverSearchApi(ingredientRequest.ingredientName());
                     ingredientRepository.save(
-                            Ingredient.of(null, ingredientRequest.ingredientName(), null, null,category, null)
+                            Ingredient.of(null, ingredientRequest.ingredientName(), imageFromNaverSearchApi, null, category, null)
                     );
 
                 });
