@@ -17,16 +17,17 @@ public class Bookmark {
     private Long id;
 
     @ManyToOne
-    private User userId;
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @OneToOne
-    private Recipe recipeId;
+    @JoinColumn(name = "recipe_id")
+    private Recipe recipe;
 
-    public static Bookmark of(Long id, User userId, Recipe recipeId) {
+    public static Bookmark of(User user, Recipe recipe) {
         return Bookmark.builder()
-                .id(id)
-                .userId(userId)
-                .recipeId(recipeId)
+                .user(user)
+                .recipe(recipe)
                 .build();
     }
 }
