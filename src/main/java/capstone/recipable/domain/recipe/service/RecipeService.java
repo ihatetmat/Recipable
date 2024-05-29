@@ -1,5 +1,6 @@
 package capstone.recipable.domain.recipe.service;
 
+import capstone.recipable.domain.ingredient.service.NaverSearchImageService;
 import capstone.recipable.domain.recipe.dto.request.CreateRecipeRequest;
 import capstone.recipable.domain.recipe.dto.response.RecipeDetailsResponse;
 import capstone.recipable.domain.recipe.entity.Recipe;
@@ -21,6 +22,7 @@ public class RecipeService {
 
     private final RecipeRepository recipeRepository;
     private final YoutubeService youtubeService;
+    private final NaverSearchImageService naverSearchImageService;
 
     //레시피 상세 조회
     public RecipeDetailsResponse getRecipeDetails(Long recipeId) {
@@ -33,10 +35,7 @@ public class RecipeService {
     //레시피 생성
     @Transactional
     public RecipeDetailsResponse createRecipe(CreateRecipeRequest request) throws IOException {
-        /**
-         * 수정해야함
-         */
-        String recipeImg = null;
+        String recipeImg = naverSearchImageService.getImageFromNaverSearchApi(request.getQuery());
         List<RecipeVideos>  recipeVideos = youtubeService.searchVideo(request.getQuery());
 
         Recipe recipe = Recipe.of(recipeImg, request.getRecipeName(), request.getIntroduce(),

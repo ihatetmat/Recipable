@@ -6,7 +6,7 @@ import capstone.recipable.domain.category.repository.CategoryRepository;
 import capstone.recipable.domain.ingredient.entity.Ingredient;
 import capstone.recipable.domain.ingredient.repository.IngredientRepository;
 import capstone.recipable.domain.ingredient.service.NaverSearchImageService;
-import capstone.recipable.domain.refrigerator.dto.CreateIngredientListRequest;
+import capstone.recipable.domain.refrigerator.dto.request.CreateIngredientListRequest;
 import capstone.recipable.domain.refrigerator.entity.Refrigerator;
 import capstone.recipable.domain.refrigerator.repository.RefrigeratorRepository;
 import capstone.recipable.domain.user.entity.User;
@@ -45,6 +45,7 @@ public class CreateIngredientService {
                     ingredientRepository.save(
                             Ingredient.of(null, ingredientRequest.ingredientName(), imageFromNaverSearchApi, null, category, null)
                     );
+
                 });
     }
 
