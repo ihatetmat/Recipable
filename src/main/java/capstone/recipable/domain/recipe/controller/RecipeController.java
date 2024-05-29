@@ -1,6 +1,8 @@
 package capstone.recipable.domain.recipe.controller;
 
+import capstone.recipable.domain.ingredient.service.NaverSearchImageService;
 import capstone.recipable.domain.recipe.dto.request.CreateRecipeRequest;
+import capstone.recipable.domain.recipe.dto.response.ImageResponse;
 import capstone.recipable.domain.recipe.dto.response.RecipeDetailsResponse;
 import capstone.recipable.domain.recipe.dto.response.RecipeVideoResponse;
 import capstone.recipable.domain.recipe.service.RecipeService;
@@ -22,19 +24,22 @@ import java.util.List;
 public class RecipeController {
 
     private final RecipeService recipeService;
-    private final YoutubeService youtubeService;
+    private final NaverSearchImageService naverSearchImageService;
 
-    /*@Operation(summary = "유튜브 api", description = """
-            유튜브 영상 첨부 api입니다.
+    @Operation(summary = "이미지 가져오기 api", description = """
+            이미지 가져오기 api입니다.
             
-            param으로 keyword를 보내주시면 유튜브에서 검색하여 영상 3개를 반환해줍니다.
+            RequestParam으로 imageName을 받습니다.
             
+            불러오고 싶은 이미지를 입력해주세요. ex)사과
             """)
-    @GetMapping("/videos")
-    public ResponseEntity<List<RecipeVideoResponse>> searchVideo(@RequestParam String keyword) throws IOException {
-        List<RecipeVideoResponse> results = youtubeService.searchVideo(keyword);
-        return ResponseEntity.ok(results);
-    }*/
+    @GetMapping("/image")
+    public ResponseEntity<SuccessResponse<ImageResponse>> getImage(@RequestParam String imageName) {
+
+        String image = naverSearchImageService.getImageFromNaverSearchApi(imageName);
+        ImageResponse response = ImageResponse.of(image);
+        return SuccessResponse.of(response);
+    }
 
     @Operation(summary = "레시피 생성 api", description = """
             레시피 상세 조회 api입니다.

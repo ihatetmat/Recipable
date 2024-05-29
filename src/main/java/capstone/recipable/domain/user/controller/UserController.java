@@ -47,7 +47,7 @@ public class UserController {
             
             현재 변경가능한 항목은 nickname입니다.
             """)
-    @PutMapping("/info")
+    @PatchMapping("/info")
     public ResponseEntity<SuccessResponse<UserInfoResponse>> updateUserInfo(@RequestBody UpdateUserInfo request) {
         UserInfoResponse response = userService.updateUserInfo(request);
         return SuccessResponse.of(response);

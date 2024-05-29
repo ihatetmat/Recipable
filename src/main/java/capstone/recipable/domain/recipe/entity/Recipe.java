@@ -28,7 +28,7 @@ public class Recipe {
 
     private String recipeDetails;
 
-    @OneToMany
+    @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     private List<RecipeVideos> recipeVideos;
 
     @OneToOne
