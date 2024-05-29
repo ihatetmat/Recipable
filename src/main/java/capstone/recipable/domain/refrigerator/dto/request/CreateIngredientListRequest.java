@@ -8,7 +8,7 @@ import java.util.List;
 public record CreateIngredientListRequest(
         List<IngredientRequest> ingredients
 ) {
-    public record IngredientRequest(String categoryName, String ingredientName) {
+    public record IngredientRequest(String ingredientCategory, String ingredientName) {
 
     }
 }
