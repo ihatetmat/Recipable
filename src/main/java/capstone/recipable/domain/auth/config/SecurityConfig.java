@@ -38,7 +38,7 @@ public class SecurityConfig {
                 .addFilterBefore(jwtFilter, ExceptionTranslationFilter.class)
                 .cors(c -> c.configurationSource(request -> {
                     CorsConfiguration config = new CorsConfiguration();
-                    config.setAllowedOrigins(List.of("http://localhost:5173", "https://recipable.store"));
+                    config.setAllowedOrigins(List.of("http://localhost:5173", "https://recipable.store","https://recipable.vercel.app"));
                     config.setAllowedMethods(List.of("*"));
                     config.setAllowCredentials(true);
                     config.setAllowedHeaders(List.of("*"));
