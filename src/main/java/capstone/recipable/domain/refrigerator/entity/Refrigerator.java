@@ -16,12 +16,13 @@ public class Refrigerator {
     private Long id;
 
     @OneToOne
-    private User userId;
+    @JoinColumn(name = "user_id")
+    private User user;
 
-    public static Refrigerator of(Long id, User userId) {
+    public static Refrigerator of(Long id, User user) {
         return Refrigerator.builder()
                 .id(id)
-                .userId(userId)
+                .user(user)
                 .build();
     }
 }

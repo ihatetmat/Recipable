@@ -18,18 +18,33 @@ public class Ingredient {
 
     private String ingredientName;
 
+    private String ingredientImage;
+
+    private String memo;
+
     @ManyToOne(fetch=FetchType.LAZY)
-    private Category categoryId;
+    @JoinColumn(name = "category_id")
+    private Category category;
 
-    @OneToOne
-    private Expiration expirationId;
+    @OneToOne(mappedBy = "ingredient", cascade = CascadeType.ALL)
+    private Expiration expiration;
 
-    public static Ingredient of(Long id, String ingredientName, Category categoryId, Expiration expirationId) {
+    public static Ingredient of(Long id, String ingredientName, String ingredientImage, String memo, Category category, Expiration expiration) {
         return Ingredient.builder()
                 .id(id)
                 .ingredientName(ingredientName)
-                .categoryId(categoryId)
-                .expirationId(expirationId)
+                .ingredientImage(ingredientImage)
+                .category(category)
+                .expiration(expiration)
+                .memo(memo)
                 .build();
     }
+
+    public void updateIngredientInfo(String ingredientName, String ingredientImage, String memo, Category category) {
+        this.ingredientName = ingredientName;
+        this.ingredientImage = ingredientImage;
+        this.memo = memo;
+        this.category = category;
+    }
+
 }

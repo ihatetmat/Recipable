@@ -1,6 +1,7 @@
 package capstone.recipable.domain.user.controller;
 
 import capstone.recipable.domain.user.dto.request.UpdateUserInfo;
+import capstone.recipable.domain.user.dto.response.MainPageResponse;
 import capstone.recipable.domain.user.dto.response.UserInfoResponse;
 import capstone.recipable.domain.user.service.UserService;
 import capstone.recipable.global.response.SuccessResponse;
@@ -18,9 +19,23 @@ public class UserController {
 
     private final UserService userService;
 
-    @Operation(summary = "사용자 정보 조회")
+    @Operation(summary = "메인 페이지 조회", description = """
+            메인 페이지 조회 api입니다.
+            
+            """)
+    @GetMapping("/main")
+    public ResponseEntity<SuccessResponse<MainPageResponse>> getMainPage() {
+        MainPageResponse response = userService.getMainPage();
+        return SuccessResponse.of(response);
+    }
+
+    @Operation(summary = "사용자 정보 조회", description = """
+            사용자 정보 조회 api입니다.
+        
+            """)
     @GetMapping("/info")
-    ResponseEntity<SuccessResponse<UserInfoResponse>> getUserInfo() {
+    public ResponseEntity<SuccessResponse<UserInfoResponse>> getUserInfo() {
+
         UserInfoResponse response = userService.getUserInfo();
         return SuccessResponse.of(response);
     }
@@ -33,7 +48,7 @@ public class UserController {
             현재 변경가능한 항목은 nickname입니다.
             """)
     @PutMapping("/info")
-    ResponseEntity<SuccessResponse<UserInfoResponse>> updateUserInfo(@RequestBody UpdateUserInfo request) {
+    public ResponseEntity<SuccessResponse<UserInfoResponse>> updateUserInfo(@RequestBody UpdateUserInfo request) {
         UserInfoResponse response = userService.updateUserInfo(request);
         return SuccessResponse.of(response);
     }
@@ -46,7 +61,7 @@ public class UserController {
             회원탈퇴가 정상적으로 처리될 경우 회원 탈퇴 성공 메시지를 반환합니다.
             """)
     @DeleteMapping("/info")
-    ResponseEntity<SuccessResponse<String>> deleteUser() {
+    public ResponseEntity<SuccessResponse<String>> deleteUser() {
         userService.deleteUser();
         return SuccessResponse.of("회원 탈퇴 성공");
     }
