@@ -44,7 +44,7 @@ public class RecipeController {
     @Operation(summary = "레시피 생성 api", description = """
             레시피 상세 조회 api입니다.
             
-            gpt 결과를 보내주시면 레시피를 생성하고 저장합니다.
+            레시피 이미지와 gpt 결과를 보내주시면 레시피를 생성하고 저장합니다.
             
             저장한 레시피와 레시피 관련 영상을 반환해줍니다.
             """)
