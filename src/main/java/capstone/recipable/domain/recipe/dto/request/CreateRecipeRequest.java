@@ -14,6 +14,8 @@ public class CreateRecipeRequest {
 
     private String recipeName;
 
+    private String recipeImg;
+
     private String introduce;
 
     private List<String> ingredients;

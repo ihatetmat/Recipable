@@ -35,10 +35,8 @@ public class RecipeService {
     //레시피 생성
     @Transactional
     public RecipeDetailsResponse createRecipe(CreateRecipeRequest request) throws IOException {
-        String recipeImg = naverSearchImageService.getImageFromNaverSearchApi(request.getQuery());
         List<RecipeVideos>  recipeVideos = youtubeService.searchVideo(request.getQuery());
-
-        Recipe recipe = Recipe.of(recipeImg, request.getRecipeName(), request.getIntroduce(),
+        Recipe recipe = Recipe.of(request.getRecipeImg(), request.getRecipeName(), request.getIntroduce(),
                 request.getIngredients(), request.getRecipeDetails(), recipeVideos);
 
         recipeRepository.save(recipe);
