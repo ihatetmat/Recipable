@@ -52,7 +52,7 @@ public class RefrigeratorController {
             """)
     @PatchMapping(value = "/{ingredientId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<SuccessResponse<IngredientDetailResponse>> updateIngredient(@PathVariable Long ingredientId,
-                                                                                      @RequestPart UpdateIngredientRequest updateIngredientRequest,
+                                                                                      @RequestPart(value = "updateIngredientRequest", required = false) UpdateIngredientRequest updateIngredientRequest,
                                                                                       @RequestPart(value = "multipartFile", required = false) MultipartFile multipartFile) {
 
         IngredientDetailResponse ingredientDetail = refrigeratorService.updateIngredient(ingredientId, updateIngredientRequest, multipartFile);

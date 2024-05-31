@@ -104,37 +104,53 @@ public class RefrigeratorService {
 
     @Transactional
     public IngredientDetailResponse updateIngredient(Long ingredientId, UpdateIngredientRequest updateIngredientRequest, MultipartFile multipartFile) {
+        User user = userRepository.findById(SecurityContextProvider.getAuthenticatedUserId())
+                .orElseThrow(() -> new ApplicationException(ErrorCode.USER_NOT_FOUND));
+
+        Refrigerator refrigerator = refrigeratorRepository.findByUser(user)
+                .orElseThrow(() -> new ApplicationException(ErrorCode.REFRIGERATOR_NOT_FOUND));
+
         Ingredient ingredient = ingredientRepository.findById(ingredientId)
                 .orElseThrow(() -> new ApplicationException(ErrorCode.INGREDIENT_NOT_FOUND));
 
+        String ingredientName = ingredient.getIngredientName();
+        if (updateIngredientRequest != null && updateIngredientRequest.ingredientName() != null) {
+            ingredientName = updateIngredientRequest.ingredientName();
+        }
+
+        Category category = ingredient.getCategory();
+        if (updateIngredientRequest != null && updateIngredientRequest.categoryName() != null) {
+            category = categoryRepository.findByCategoryNameAndRefrigerator(updateIngredientRequest.categoryName(), refrigerator)
+                    .orElseThrow(() -> new ApplicationException(ErrorCode.CATEGORY_NOT_FOUND));
+        }
+
         Expiration expiration = expirationRepository.findByIngredient(ingredient)
                 .orElseGet(() -> {
-                    if (updateIngredientRequest.expirationDay() != null) {
-                        Expiration newExpiration = Expiration.of(null, updateIngredientRequest.expirationDay(), ingredient);
-                        return expirationRepository.save(newExpiration);
-                    }
-                    return null;
+                    Expiration newExpiration = Expiration.of(null, updateIngredientRequest.expirationDay(), ingredient);
+                    return expirationRepository.save(newExpiration);
                 });
 
-        if (expiration != null && updateIngredientRequest.expirationDay() != null) {
+        if (updateIngredientRequest != null && updateIngredientRequest.expirationDay() != null) {
             expiration.updateExpirationDate(updateIngredientRequest.expirationDay());
+            expirationRepository.save(expiration);
         }
 
-        String requestedCategoryName = updateIngredientRequest.categoryName();
-        Category category = categoryRepository.findByCategoryName(requestedCategoryName)
-                .orElseThrow(() -> new ApplicationException(ErrorCode.CATEGORY_NOT_FOUND));
+        String memo = ingredient.getMemo();
+        if (updateIngredientRequest != null && updateIngredientRequest.memo() != null) {
+            memo = updateIngredientRequest.memo();
+        }
 
-        String uploadedFile = ingredient.getIngredientImage();
         if (multipartFile != null) {
-            String uuid = UUID.randomUUID().toString();
-            Uuid savedUuid = uuidRepository.save(Uuid.builder().uuid(uuid).build());
-            uploadedFile = amazonS3Manager.uploadFile(amazonS3Manager.generateIngredientKeyName(savedUuid),multipartFile);
-        }
-        ingredient.updateIngredientInfo(updateIngredientRequest.ingredientName(), uploadedFile, updateIngredientRequest.memo(), category);
+                String uuid = UUID.randomUUID().toString();
+                Uuid savedUuid = uuidRepository.save(Uuid.builder().uuid(uuid).build());
+                String uploadedFile = amazonS3Manager.uploadFile(amazonS3Manager.generateIngredientKeyName(savedUuid), multipartFile);
+            ingredient.updateIngredientInfo(ingredientName, uploadedFile, memo, category);
+        } else
+            ingredient.updateIngredientInfo(ingredientName, ingredient.getIngredientImage(), memo, category);
 
-        return IngredientDetailResponse.of(ingredient.getIngredientName(), ingredient.getIngredientImage(), ingredient.getCategory().getCategoryName(),
-                expiration.getExpireDate(), ingredient.getMemo());
-    }
+        return IngredientDetailResponse.of(ingredientName, ingredient.getIngredientImage(), ingredient.getCategory().getCategoryName(),
+                expiration.getExpireDate(), memo);
+        }
 
     @Transactional
     public void deleteIngredient(Long ingredientId) {
