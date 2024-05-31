@@ -11,6 +11,8 @@ public class RecipeSummaryResponse {
 
     private Long recipeId;
 
+    private String recipeName;
+
     private String recipeImg;
 
     private String introduce;
@@ -18,6 +20,7 @@ public class RecipeSummaryResponse {
     public static RecipeSummaryResponse of(Recipe recipe) {
         return RecipeSummaryResponse.builder()
                 .recipeId(recipe.getId())
+                .recipeName(recipe.getRecipeName())
                 .recipeImg(recipe.getRecipeImg())
                 .introduce(recipe.getIntroduce())
                 .build();
