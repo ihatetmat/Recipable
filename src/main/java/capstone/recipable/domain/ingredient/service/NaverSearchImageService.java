@@ -45,7 +45,12 @@ public class NaverSearchImageService {
         JSONObject jsonObject = new JSONObject(responseBody);
         JSONArray items = jsonObject.getJSONArray("items");
 
-        return items.getJSONObject(0).getString("thumbnail");
+        if (!items.isEmpty()) {
+            return items.getJSONObject(0).getString("thumbnail");
+        }
+        else {
+            return null;
+        }
     }
 
 }
