@@ -18,7 +18,7 @@ public class CreateRecipeRequest {
 
     private String introduce;
 
-    private List<String> ingredients;
+    private String ingredients;
 
     private String recipeDetails;
 

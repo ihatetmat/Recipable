@@ -19,6 +19,8 @@ public class RecipeDetailsResponse {
 
     private String recipeImg;
 
+    private String ingredients;
+
     private String recipeDetails;
 
     private List<RecipeVideoResponse> recipeVideoResponses;
@@ -35,6 +37,7 @@ public class RecipeDetailsResponse {
                 .recipeName(recipe.getRecipeName())
                 .introduce(recipe.getIntroduce())
                 .recipeImg(recipe.getRecipeImg())
+                .ingredients(recipe.getIngredients())
                 .recipeDetails(recipe.getRecipeDetails())
                 .recipeVideoResponses(responses)
                 .build();

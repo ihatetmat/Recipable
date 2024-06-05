@@ -1,8 +1,5 @@
 package capstone.recipable.domain.ingredient.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,9 +11,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
 import java.nio.charset.Charset;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 
 @Component
 public class NaverSearchImageService {
@@ -51,7 +45,12 @@ public class NaverSearchImageService {
         JSONObject jsonObject = new JSONObject(responseBody);
         JSONArray items = jsonObject.getJSONArray("items");
 
-        return items.getJSONObject(0).getString("thumbnail");
+        if (!items.isEmpty()) {
+            return items.getJSONObject(0).getString("thumbnail");
+        }
+        else {
+            return null;
+        }
     }
 
 }
