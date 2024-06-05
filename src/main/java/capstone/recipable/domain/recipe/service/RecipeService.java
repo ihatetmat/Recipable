@@ -22,7 +22,6 @@ public class RecipeService {
 
     private final RecipeRepository recipeRepository;
     private final YoutubeService youtubeService;
-    private final NaverSearchImageService naverSearchImageService;
 
     //레시피 상세 조회
     public RecipeDetailsResponse getRecipeDetails(Long recipeId) {

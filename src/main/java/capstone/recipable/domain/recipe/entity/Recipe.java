@@ -23,8 +23,7 @@ public class Recipe {
 
     private String introduce;
 
-    @ElementCollection
-    private List<String> ingredients;
+    private String ingredients;
 
     private String recipeDetails;
 
@@ -36,7 +35,7 @@ public class Recipe {
     private User user;
 
     public static Recipe of(String recipeImg, String recipeName, String introduce,
-                             List<String> ingredients, String recipeDetails,
+                             String ingredients, String recipeDetails,
                              List<RecipeVideos> recipeVideos) {
         return Recipe.builder()
                 .recipeImg(recipeImg)
