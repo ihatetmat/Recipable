@@ -51,7 +51,7 @@ public class EmailService {
 
             message.setFrom(SENDER_EMAIL_ADDRESS);
             message.setRecipients(MimeMessage.RecipientType.TO, mail);
-            message.setSubject("또바 이메일 인증");
+            message.setSubject("Recipable 이메일 인증");
             message.setText(htmlContent, "UTF-8", "html");
 
         } catch (MessagingException | IOException e) {
