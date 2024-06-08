@@ -30,13 +30,13 @@ public class Recipe {
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
     private List<RecipeVideos> recipeVideos;
 
-    @OneToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
     public static Recipe of(String recipeImg, String recipeName, String introduce,
                              String ingredients, String recipeDetails,
-                             List<RecipeVideos> recipeVideos) {
+                             List<RecipeVideos> recipeVideos, User user) {
         return Recipe.builder()
                 .recipeImg(recipeImg)
                 .recipeName(recipeName)
@@ -44,6 +44,7 @@ public class Recipe {
                 .ingredients(ingredients)
                 .recipeDetails(recipeDetails)
                 .recipeVideos(recipeVideos)
+                .user(user)
                 .build();
     }
 }
