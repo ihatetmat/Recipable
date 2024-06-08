@@ -1,11 +1,15 @@
 package capstone.recipable.domain.recipe.service;
 
+import capstone.recipable.domain.auth.jwt.SecurityContextProvider;
 import capstone.recipable.domain.ingredient.service.NaverSearchImageService;
 import capstone.recipable.domain.recipe.dto.request.CreateRecipeRequest;
 import capstone.recipable.domain.recipe.dto.response.RecipeDetailsResponse;
 import capstone.recipable.domain.recipe.entity.Recipe;
 import capstone.recipable.domain.recipe.entity.RecipeVideos;
 import capstone.recipable.domain.recipe.repository.RecipeRepository;
+import capstone.recipable.domain.user.entity.User;
+import capstone.recipable.domain.user.repository.UserRepository;
+import capstone.recipable.domain.user.service.UserService;
 import capstone.recipable.global.error.ApplicationException;
 import capstone.recipable.global.error.ErrorCode;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +26,7 @@ public class RecipeService {
 
     private final RecipeRepository recipeRepository;
     private final YoutubeService youtubeService;
+    private final UserRepository userRepository;
 
     //레시피 상세 조회
     public RecipeDetailsResponse getRecipeDetails(Long recipeId) {
@@ -34,9 +39,13 @@ public class RecipeService {
     //레시피 생성
     @Transactional
     public RecipeDetailsResponse createRecipe(CreateRecipeRequest request) throws IOException {
+        Long userId = SecurityContextProvider.getAuthenticatedUserId();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ApplicationException(ErrorCode.USER_NOT_FOUND));
+
         List<RecipeVideos>  recipeVideos = youtubeService.searchVideo(request.getQuery());
         Recipe recipe = Recipe.of(request.getRecipeImg(), request.getRecipeName(), request.getIntroduce(),
-                request.getIngredients(), request.getRecipeDetails(), recipeVideos);
+                request.getIngredients(), request.getRecipeDetails(), recipeVideos, user);
 
         recipeRepository.save(recipe);
 
