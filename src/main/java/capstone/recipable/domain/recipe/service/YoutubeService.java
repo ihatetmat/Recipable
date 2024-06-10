@@ -1,6 +1,7 @@
 package capstone.recipable.domain.recipe.service;
 
 import capstone.recipable.domain.auth.jwt.SecurityContextProvider;
+import capstone.recipable.domain.recipe.dto.response.RecipeVideoResponse;
 import capstone.recipable.domain.recipe.entity.RecipeVideos;
 import capstone.recipable.domain.recipe.repository.RecipeVideosRepository;
 import capstone.recipable.global.error.ApplicationException;
@@ -28,7 +29,7 @@ public class YoutubeService {
 
     private final RecipeVideosRepository recipeVideosRepository;
 
-    public List<RecipeVideos> searchVideo(String query) throws IOException {
+    public List<RecipeVideoResponse> searchVideo(String query) throws IOException {
         // JSON 데이터를 처리하기 위한 JsonFactory 객체 생성
         JsonFactory jsonFactory = new JacksonFactory();
 
@@ -48,7 +49,7 @@ public class YoutubeService {
         List<SearchResult> searchResultList = searchResponse.getItems();
 
         if (searchResultList != null && !searchResultList.isEmpty()) {
-            List<RecipeVideos> responses = new ArrayList<>();
+            List<RecipeVideoResponse> responses = new ArrayList<>();
             for (int i = 0; i < 3; i++) {
                 SearchResult searchResult = searchResultList.get(i);
 
@@ -56,15 +57,13 @@ public class YoutubeService {
                 String videoTitle = searchResult.getSnippet().getTitle();
                 String thumbnail = searchResult.getSnippet().getThumbnails().getDefault().getUrl();
 
-                RecipeVideos response = RecipeVideos.of(videoId, videoTitle, thumbnail);
-                recipeVideosRepository.save(response);
+                RecipeVideoResponse response = RecipeVideoResponse.of(videoId, videoTitle, thumbnail);
                 responses.add(response);
             }
             return responses;
         }
         else{
             throw new ApplicationException(ErrorCode.INVALID_BODY);
-
         }
     }
 }

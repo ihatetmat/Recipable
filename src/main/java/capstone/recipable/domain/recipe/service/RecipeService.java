@@ -4,9 +4,11 @@ import capstone.recipable.domain.auth.jwt.SecurityContextProvider;
 import capstone.recipable.domain.ingredient.service.NaverSearchImageService;
 import capstone.recipable.domain.recipe.dto.request.CreateRecipeRequest;
 import capstone.recipable.domain.recipe.dto.response.RecipeDetailsResponse;
+import capstone.recipable.domain.recipe.dto.response.RecipeVideoResponse;
 import capstone.recipable.domain.recipe.entity.Recipe;
 import capstone.recipable.domain.recipe.entity.RecipeVideos;
 import capstone.recipable.domain.recipe.repository.RecipeRepository;
+import capstone.recipable.domain.recipe.repository.RecipeVideosRepository;
 import capstone.recipable.domain.user.entity.User;
 import capstone.recipable.domain.user.repository.UserRepository;
 import capstone.recipable.domain.user.service.UserService;
@@ -25,6 +27,7 @@ import java.util.List;
 public class RecipeService {
 
     private final RecipeRepository recipeRepository;
+    private final RecipeVideosRepository recipeVideosRepository;
     private final YoutubeService youtubeService;
     private final UserRepository userRepository;
 
@@ -43,11 +46,19 @@ public class RecipeService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ApplicationException(ErrorCode.USER_NOT_FOUND));
 
-        List<RecipeVideos>  recipeVideos = youtubeService.searchVideo(request.getQuery());
+        List<RecipeVideoResponse> recipeVideoResponses = youtubeService.searchVideo(request.getQuery());
         Recipe recipe = Recipe.of(request.getRecipeImg(), request.getRecipeName(), request.getIntroduce(),
-                request.getIngredients(), request.getRecipeDetails(), recipeVideos, user);
+                request.getIngredients(), request.getRecipeDetails(), user);
 
         recipeRepository.save(recipe);
+
+        List<RecipeVideos> recipeVideos = recipeVideoResponses.stream()
+                .map(videos -> RecipeVideos.of(videos.getVideoUrl(), videos.getTitle(), videos.getThumbnail(), recipe))
+                .toList();
+
+        recipeVideosRepository.saveAll(recipeVideos);
+
+        recipe.updateVideo(recipeVideos);
 
         return RecipeDetailsResponse.of(recipe);
     }
