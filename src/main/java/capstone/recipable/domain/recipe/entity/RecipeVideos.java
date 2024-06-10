@@ -24,11 +24,12 @@ public class RecipeVideos {
     @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
-    public static RecipeVideos of(String videoUrl, String title, String thumbnail) {
+    public static RecipeVideos of(String videoUrl, String title, String thumbnail, Recipe recipe) {
         return RecipeVideos.builder()
                 .videoUrl("https://www.youtube.com/watch?v="+videoUrl)
                 .title(title)
                 .thumbnail(thumbnail)
+                .recipe(recipe)
                 .build();
     }
 }

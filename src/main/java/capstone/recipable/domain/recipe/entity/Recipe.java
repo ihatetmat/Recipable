@@ -34,16 +34,18 @@ public class Recipe {
     @JoinColumn(name = "user_id")
     private User user;
 
+    public void updateVideo(List<RecipeVideos> recipeVideos) {
+        this.recipeVideos = recipeVideos;
+    }
+
     public static Recipe of(String recipeImg, String recipeName, String introduce,
-                             String ingredients, String recipeDetails,
-                             List<RecipeVideos> recipeVideos, User user) {
+                             String ingredients, String recipeDetails, User user) {
         return Recipe.builder()
                 .recipeImg(recipeImg)
                 .recipeName(recipeName)
                 .introduce(introduce)
                 .ingredients(ingredients)
                 .recipeDetails(recipeDetails)
-                .recipeVideos(recipeVideos)
                 .user(user)
                 .build();
     }
