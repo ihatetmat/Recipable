@@ -2,6 +2,7 @@ package capstone.recipable.domain.recipe.controller;
 
 import capstone.recipable.domain.ingredient.service.NaverSearchImageService;
 import capstone.recipable.domain.recipe.dto.request.CreateRecipeRequest;
+import capstone.recipable.domain.recipe.dto.response.CreateRecipeResponse;
 import capstone.recipable.domain.recipe.dto.response.ImageResponse;
 import capstone.recipable.domain.recipe.dto.response.RecipeDetailsResponse;
 import capstone.recipable.domain.recipe.dto.response.RecipeVideoResponse;
@@ -49,8 +50,8 @@ public class RecipeController {
             저장한 레시피와 레시피 관련 영상을 반환해줍니다.
             """)
     @PostMapping
-    public ResponseEntity<SuccessResponse<RecipeDetailsResponse>> createRecipe(@RequestBody CreateRecipeRequest request) throws IOException {
-        RecipeDetailsResponse response = recipeService.createRecipe(request);
+    public ResponseEntity<SuccessResponse<CreateRecipeResponse>> createRecipe(@RequestBody CreateRecipeRequest request) throws IOException {
+        CreateRecipeResponse response = recipeService.createRecipe(request);
         return SuccessResponse.of(response);
     }
 

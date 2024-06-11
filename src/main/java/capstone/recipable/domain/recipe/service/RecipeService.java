@@ -1,8 +1,10 @@
 package capstone.recipable.domain.recipe.service;
 
 import capstone.recipable.domain.auth.jwt.SecurityContextProvider;
+import capstone.recipable.domain.bookmark.repository.BookmarkRepository;
 import capstone.recipable.domain.ingredient.service.NaverSearchImageService;
 import capstone.recipable.domain.recipe.dto.request.CreateRecipeRequest;
+import capstone.recipable.domain.recipe.dto.response.CreateRecipeResponse;
 import capstone.recipable.domain.recipe.dto.response.RecipeDetailsResponse;
 import capstone.recipable.domain.recipe.dto.response.RecipeVideoResponse;
 import capstone.recipable.domain.recipe.entity.Recipe;
@@ -30,18 +32,25 @@ public class RecipeService {
     private final RecipeVideosRepository recipeVideosRepository;
     private final YoutubeService youtubeService;
     private final UserRepository userRepository;
+    private final BookmarkRepository bookmarkRepository;
 
     //레시피 상세 조회
     public RecipeDetailsResponse getRecipeDetails(Long recipeId) {
+        Long userId = SecurityContextProvider.getAuthenticatedUserId();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ApplicationException(ErrorCode.USER_NOT_FOUND));
+
         Recipe recipe = recipeRepository.findById(recipeId)
                 .orElseThrow(() -> new ApplicationException(ErrorCode.RECIPE_NOT_FOUND));
 
-        return RecipeDetailsResponse.of(recipe);
+        boolean isMarked = bookmarkRepository.isBookmarked(user, recipe);
+
+        return RecipeDetailsResponse.of(recipe, isMarked);
     }
 
     //레시피 생성
     @Transactional
-    public RecipeDetailsResponse createRecipe(CreateRecipeRequest request) throws IOException {
+    public CreateRecipeResponse createRecipe(CreateRecipeRequest request) throws IOException {
         Long userId = SecurityContextProvider.getAuthenticatedUserId();
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ApplicationException(ErrorCode.USER_NOT_FOUND));
@@ -60,6 +69,6 @@ public class RecipeService {
 
         recipe.updateVideo(recipeVideos);
 
-        return RecipeDetailsResponse.of(recipe);
+        return CreateRecipeResponse.of(recipe);
     }
 }
