@@ -54,9 +54,15 @@ public class BookmarkService {
     }
 
     @Transactional
-    public String deleteBookmark(Long bookmarkId) {
-        Bookmark bookmark = bookmarkRepository.findById(bookmarkId)
-                .orElseThrow(() -> new ApplicationException(ErrorCode.BOOKMARK_NOT_FOUND));
+    public String deleteBookmark(Long recipeId) {
+        Long userId = SecurityContextProvider.getAuthenticatedUserId();
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ApplicationException(ErrorCode.USER_NOT_FOUND));
+
+        Recipe recipe = recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new ApplicationException(ErrorCode.RECIPE_NOT_FOUND));
+
+        Bookmark bookmark = bookmarkRepository.findByUserAndRecipe(user, recipe);
 
         bookmarkRepository.delete(bookmark);
 

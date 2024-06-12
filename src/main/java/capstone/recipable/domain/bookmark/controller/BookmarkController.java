@@ -46,9 +46,9 @@ public class BookmarkController {
             북마크 삭제 api입니다.
             
             """)
-    @DeleteMapping("/{bookmarkId}")
-    public ResponseEntity<SuccessResponse<String>> deleteBookmark(@PathVariable long bookmarkId) {
-        String response = bookmarkService.deleteBookmark(bookmarkId);
+    @DeleteMapping("/{recipeId}")
+    public ResponseEntity<SuccessResponse<String>> deleteBookmark(@PathVariable long recipeId) {
+        String response = bookmarkService.deleteBookmark(recipeId);
         return SuccessResponse.of(response);
     }
 }
