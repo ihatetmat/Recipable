@@ -29,6 +29,7 @@ public class NaverSearchImageService {
                 .queryParam("display", 1)
                 .queryParam("start", 1)
                 .queryParam("sort", "sim")
+                .queryParam("filter","medium")
                 .encode(Charset.forName("UTF-8"))
                 .build()
                 .toUri();
