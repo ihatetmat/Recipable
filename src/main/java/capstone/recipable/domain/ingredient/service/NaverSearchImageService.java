@@ -29,7 +29,7 @@ public class NaverSearchImageService {
                 .queryParam("display", 1)
                 .queryParam("start", 1)
                 .queryParam("sort", "sim")
-                .queryParam("filter","large")
+                .queryParam("filter","medium")
                 .encode(Charset.forName("UTF-8"))
                 .build()
                 .toUri();
@@ -47,7 +47,7 @@ public class NaverSearchImageService {
         JSONArray items = jsonObject.getJSONArray("items");
 
         if (!items.isEmpty()) {
-            return items.getJSONObject(0).getString("thumbnail");
+            return items.getJSONObject(0).getString("link");
         }
         else {
             return null;
