@@ -55,7 +55,7 @@ public class YoutubeService {
 
                 String videoId = searchResult.getId().getVideoId();
                 String videoTitle = searchResult.getSnippet().getTitle();
-                String thumbnail = searchResult.getSnippet().getThumbnails().getDefault().getUrl();
+                String thumbnail = searchResult.getSnippet().getThumbnails().getHigh().getUrl();
 
                 RecipeVideoResponse response = RecipeVideoResponse.of(videoId, videoTitle, thumbnail);
                 responses.add(response);
