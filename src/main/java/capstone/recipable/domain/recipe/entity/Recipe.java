@@ -25,6 +25,7 @@ public class Recipe {
 
     private String ingredients;
 
+    @Column(length = 3000)
     private String recipeDetails;
 
     @OneToMany(mappedBy = "recipe", cascade = CascadeType.ALL)
