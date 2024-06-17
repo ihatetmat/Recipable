@@ -2,6 +2,7 @@ package capstone.recipable.domain.recipe.dto.response;
 
 import capstone.recipable.domain.bookmark.repository.BookmarkRepository;
 import capstone.recipable.domain.recipe.entity.Recipe;
+import jakarta.persistence.Column;
 import lombok.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class CreateRecipeResponse {
 
     private String ingredients;
 
+    @Column(length = 3000)
     private String recipeDetails;
 
     private List<RecipeVideoResponse> recipeVideoResponses;
